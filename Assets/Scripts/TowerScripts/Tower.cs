@@ -7,6 +7,7 @@ public abstract class Tower : MonoBehaviour, IDamageable {
     public int health;
     public int range;
     public float fireRate;
+    public int cost;
 
     protected LayerMask enemyLayer = 1 << 8;
     protected GameObject target;
