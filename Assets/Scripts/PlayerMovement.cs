@@ -4,14 +4,17 @@
 public class PlayerMovement : MonoBehaviour {
 
     public float moveModifier = .5f;
+    public float checkForCollisionDistance = 1f;
+
+    private int enemyLayer = 1 << 8;
 
     PlayerInput input;
-    Rigidbody rigidbody;
+    Rigidbody rbody;
     Transform model;
 
     void Awake()
     {
-        rigidbody = GetComponent<Rigidbody>();
+        rbody = GetComponent<Rigidbody>();
         model = transform.FindChild("Model");
         input = GetComponent<PlayerInput>();
     }
@@ -29,9 +32,18 @@ public class PlayerMovement : MonoBehaviour {
 
     void Move(Vector3 direction)
     {
+        if (direction == Vector3.zero) return;
+
         model.LookAt(transform.position + direction);
-        rigidbody.MovePosition(rigidbody.position + direction * moveModifier);
-        
-        //rigidbody..Translate(direction * moveModifier);
+
+        if (CanMoveInDirection(direction))
+        {
+            rbody.MovePosition(rbody.position + direction * moveModifier);
+        }
+    }
+
+    bool CanMoveInDirection(Vector3 direction)
+    {
+        return !Physics.Raycast(rbody.position, direction, moveModifier + 1f, enemyLayer);
     }
 }
