@@ -7,28 +7,33 @@ public class LevelManager : MonoBehaviour {
     int levelIndex = 0;
     Level level;
     EnemySpawner enemySpawner;
+    DayNight dayNight;
 
     void Awake()
     {
+        dayNight = FindObjectOfType<DayNight>();
         enemySpawner = GetComponent<EnemySpawner>();
     }
 
-    void Start()
-    {
-        StartLevel();
-    }
-
-    void StartLevel()
+    public void StartLevelNight()
     {
         level = levels[levelIndex++];
         
         StartWave();
-        Invoke("StartWave", level.timeBetweenWaves);
+        Invoke("StartWave", level.timeBetweenNightWaves);
     }
 
     void StartWave()
     {
         Wave wave = level.GetWave();
-        enemySpawner.SpawnEnemies(wave.enemyTypes, wave.enemyCount);
+
+        if (wave != null)
+        {
+            enemySpawner.SpawnEnemies(wave.enemyTypes, wave.enemyCount);
+        }
+        else
+        {
+            dayNight.StartDay();
+        }
     }
 }

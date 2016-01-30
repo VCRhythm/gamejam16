@@ -3,16 +3,22 @@
 public class DayNight : MonoBehaviour {
     
     public GameObject stars;
+    public float lengthOfDay = 120;
     public bool isDay { get; private set; }
 
+    LevelManager levelManager;
     LightAutoIntensity lightAutoIntensity;
     float startTime;
-    float dayTime = 120;
-    float nightTime = 120;
 
     void Awake()
     {
         lightAutoIntensity = GetComponentInChildren<LightAutoIntensity>();
+    }
+
+    void Start()
+    {
+        levelManager = FindObjectOfType<LevelManager>();
+        StartDay();
     }
 
     void Update()
@@ -20,21 +26,25 @@ public class DayNight : MonoBehaviour {
         stars.transform.rotation = transform.rotation;
     }
 
-    void StartDay()
+    public void StartDay()
     {
         isDay = true;
-        lightAutoIntensity.TransitionToDay();
+        lightAutoIntensity.TriggerDay();
         startTime = Time.time;
 
-        Invoke("StartNight", dayTime);
+        Invoke("StartNight", lengthOfDay);
     }
 
     void StartNight()
     {
         isDay = false;
-        lightAutoIntensity.TransitionToNight();
+        lightAutoIntensity.TriggerNight();
         startTime = Time.time;
+        Invoke("StartNightLevel", 3f);
+    }
 
-        Invoke("StartDay", nightTime);
+    void StartNightLevel()
+    {
+        levelManager.StartLevelNight();
     }
 }

@@ -43,10 +43,6 @@ public class LightAutoIntensity : MonoBehaviour
         skyMat = RenderSettings.skybox;
     }
 
-    void Start()
-    {
-    }
-
     void Update()
     {
         if (Debug.isDebugBuild)
@@ -64,7 +60,17 @@ public class LightAutoIntensity : MonoBehaviour
         TransitionDayState();
     }
 
-    public void TransitionToDay()
+    public void TriggerDay()
+    {
+        SetTransition(0);
+    }
+
+    public void TriggerNight()
+    {
+        SetTransition(1);
+    }
+
+    private void TransitionToDay()
     {
         TransitionUpdate();
 
@@ -82,7 +88,7 @@ public class LightAutoIntensity : MonoBehaviour
         dayState = 0;
     }
 
-    public void TransitionToNight()
+    private void TransitionToNight()
     {
         TransitionUpdate();
 
@@ -124,7 +130,8 @@ public class LightAutoIntensity : MonoBehaviour
         }
     }
 
-    void TransitionUpdate() {
+    void TransitionUpdate()
+    {
         float tRange = 1 - minPoint;
         float dot = Mathf.Clamp01((Vector3.Dot(mainLight.transform.forward, Vector3.down) - minPoint) / tRange);
         float i = ((maxIntensity - minIntensity) * dot) + minIntensity;
