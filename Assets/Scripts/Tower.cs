@@ -53,6 +53,10 @@ public abstract class Tower : MonoBehaviour, IDamageable {
     public void TakeDamage(int damage)
     {
         health -= damage;
+        if (health <= 0)
+        {
+            Die();
+        }
         ShowDamage();
     }
     
@@ -74,4 +78,8 @@ public abstract class Tower : MonoBehaviour, IDamageable {
         isShowingDamage = false;
     }
 
+    void Die()
+    {
+        Destroy(gameObject);
+    }
 }
