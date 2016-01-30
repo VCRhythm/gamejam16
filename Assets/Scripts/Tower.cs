@@ -3,7 +3,7 @@ using System;
 
 public abstract class Tower : MonoBehaviour, IDamageable {
 
-    public int damage;
+    public float damage;
     public int health;
     public int range;
     public float fireRate;
@@ -16,7 +16,7 @@ public abstract class Tower : MonoBehaviour, IDamageable {
     public int level = 1;
 
     //amount to increase stats each upgrade
-    protected int upgradeDamage;
+    protected float upgradeDamage;
     protected int upgradeHealth;
 
     //Damage display
