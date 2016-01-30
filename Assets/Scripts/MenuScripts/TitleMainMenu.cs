@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class TitleMainMenu : MonoBehaviour {
     public Canvas MainMenu;
     public Canvas OptionMenu;
     //public AudioSource gameMusic; // TODO: add music
 
-    // Use this for initialization
     void Start () {
         MainMenu = MainMenu.GetComponent<Canvas>();
         OptionMenu = OptionMenu.GetComponent<Canvas>();
@@ -15,13 +14,8 @@ public class TitleMainMenu : MonoBehaviour {
         OptionMenu.gameObject.SetActive(false);
     }
 	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
     public void StartGame() {
-        //add code to swtich to scene
+        SceneManager.LoadSceneAsync(1);
     }
 
     public void SwitchToOptionsScreen() {

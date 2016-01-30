@@ -8,14 +8,14 @@ public class LevelManager : MonoBehaviour {
     int levelIndex = 0;
     Level level;
     EnemySpawner enemySpawner;
-    FoodSpawner foodSpawner;
+    ItemSpawner foodSpawner;
     DayNight dayNight;
 
     void Awake()
     {
         dayNight = FindObjectOfType<DayNight>();
         enemySpawner = GetComponent<EnemySpawner>();
-        foodSpawner = GetComponent<FoodSpawner>();
+        foodSpawner = GetComponent<ItemSpawner>();
     }
 
     void Start()
@@ -28,16 +28,21 @@ public class LevelManager : MonoBehaviour {
         dayNight.StartDay();
 
         level = levels[levelIndex++];
-        foodSpawner.Spawn(level.amountOfDayFood);
+        Invoke("SpawnFood", 3f);
 
         Invoke("StartNight", lengthOfDay);
+    }
+
+    void SpawnFood()
+    {
+        foodSpawner.SpawnInRandomLocation(level.amountOfDayFood);
     }
 
     void StartNight()
     {
         dayNight.StartNight();
-        
-        StartWave();
+
+        Invoke("StartWave", 3f);
         Invoke("StartWave", level.timeBetweenNightWaves);
     }
 

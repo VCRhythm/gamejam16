@@ -7,6 +7,8 @@ public static class TransformExtensions {
     private static Dictionary<Collider, Enemy> enemyScriptLookupFromCollider = new Dictionary<Collider, Enemy>();
     private static Dictionary<Collider, IDamageable> iDamageableLookupFromCollider = new Dictionary<Collider, IDamageable>();
     private static Dictionary<Collider, Food> foodScriptLookupFromCollider = new Dictionary<Collider, Food>();
+    private static Dictionary<Transform, Food> foodScriptLookupFromTransform = new Dictionary<Transform, Food>();
+
     private static Dictionary<Transform, Creature> creatureScriptLookupFromTransform = new Dictionary<Transform, Creature>();
     private static Dictionary<Transform, Enemy> enemyScriptLookupFromTransform = new Dictionary<Transform, Enemy>();
 
@@ -38,12 +40,18 @@ public static class TransformExtensions {
         else if(foodScript)
         {
             foodScriptLookupFromCollider.Add(collider, foodScript);
+            foodScriptLookupFromTransform.Add(trans, foodScript);
         }
 
         if(iDamageable != null)
         {
             iDamageableLookupFromCollider.Add(collider, iDamageable);
         }
+    }
+
+    public static Food GetFood(this Transform t)
+    {
+        return foodScriptLookupFromTransform[t];
     }
 
     public static Food GetFood(this Collider c)

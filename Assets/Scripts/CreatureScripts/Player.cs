@@ -17,11 +17,11 @@ public class Player : Creature {
         color = colors[colorIndex];
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnCollisionEnter(Collision other)
     {
-        if(other.CompareTag("Food"))
+        if(other.transform.CompareTag("Food"))
         {
-            IncreaseFood(other.GetFood().amount);
+            IncreaseFood(other.transform.GetFood().amount);
             Destroy(other.gameObject);
         }
     }

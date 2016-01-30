@@ -1,9 +1,7 @@
 ﻿using UnityEngine;
-using System;
 
 public class Homebase : Tower
 {
-
     public int heal = 2;
     public float healRate = 5f;
     public int maxHealth;
@@ -29,14 +27,13 @@ public class Homebase : Tower
 
     void Heal()
     {
-        if (health <= (health - 10))
-        {
-            health += 10;
-        }
-        else if (health > (maxHealth - 10))
+        health += 10;
+        
+        if (health > maxHealth)
         {
             health = maxHealth;
         }
+
         nextHealTime = Time.time + healRate;
     }
 

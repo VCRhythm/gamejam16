@@ -62,7 +62,7 @@ public class Fan : Tower {
     {
         if (target)
         {
-            target.GetComponent<Creature>().TakeDamage((int)damage);
+            target.transform.GetCreature().TakeDamage((int)damage);
         }
     }
 }

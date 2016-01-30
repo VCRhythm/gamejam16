@@ -14,12 +14,17 @@ public class Enemy : Creature {
     public float towerSlowModifier = 1f;
     public float slowTimer;
 
+    public int foodSpawnNumOnDeath;
+    public int healthSpawnNumOnDeath;
+
     LayerMask lookLayer = 1 << 8 | 1 << 9 | 1 << 11;
 
     Transform model;
     EnemyMovement enemyMovement;
     EnemyActions enemyActions;
     Transform target;
+
+    ItemSpawner itemSpawner;
 
     List<string> avoidTags = new List<string> { "Obstacle", "Enemy" };
     List<string> attackTags = new List<string> { "Player", "HomeBase", "Tower" };
@@ -32,6 +37,11 @@ public class Enemy : Creature {
         color = AssignColor();
         enemyActions = GetComponent<EnemyActions>();
         enemyMovement = GetComponent<EnemyMovement>();
+    }
+
+    void Start()
+    {
+        itemSpawner = FindObjectOfType<ItemSpawner>();
     }
 
     public override void TakeDamage(int damage)
@@ -120,6 +130,20 @@ public class Enemy : Creature {
     {
         GameObject target = GameObject.FindWithTag(primaryTargetTag);
         return target ? target.transform : null;
+    }
+
+    protected override void Die()
+    {
+        for(int i=0; i < foodSpawnNumOnDeath; i++)
+        {
+            itemSpawner.Spawn(ItemSpawner.ItemType.Food, transform.position);
+        }
+        for(int i=0; i < healthSpawnNumOnDeath; i++)
+        {
+            itemSpawner.Spawn(ItemSpawner.ItemType.Health, transform.position);
+        }
+
+        base.Die();
     }
 
 }

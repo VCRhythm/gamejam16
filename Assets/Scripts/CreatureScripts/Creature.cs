@@ -54,7 +54,7 @@ public class Creature : MonoBehaviour, IDamageable {
         isShowingDamage = false;
     }
 
-    void Die()
+    protected virtual void Die()
     {
         Destroy(gameObject);
     }
