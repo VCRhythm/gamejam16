@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GunTower : Tower {
+public class CheeseRay : Tower {
 
     private float nextFire;
 
