@@ -9,18 +9,50 @@ public class PauseMenu : MonoBehaviour {
     //public AudioSource gameMusic; // TODO: add music
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         Time.timeScale = 0;//pause game
         PauseMenuView = PauseMenuView.GetComponent<Canvas>();
         OptionMenuView = OptionMenuView.GetComponent<Canvas>();
         QuitConfirmView = QuitConfirmView.GetComponent<Canvas>();
+        SetValuesFromGameSaveSettings();//Set values from game/save settings
         PauseMenuView.gameObject.SetActive(true);
         OptionMenuView.gameObject.SetActive(false);
         QuitConfirmView.gameObject.SetActive(false);
     }
-	
+
+    public void AdjustGraphicsSettings()
+    {
+        GameObject GraphicsSlider = GameObject.Find("GraphicsSlider");
+        int newVal = (int)GraphicsSlider.GetComponentInChildren<Slider>().value;
+        QualitySettings.SetQualityLevel(newVal);
+        Text[] GraphicsSliderTexts = GraphicsSlider.GetComponentsInChildren<Text>();
+        foreach(Text GraphicsSliderText in GraphicsSliderTexts)
+        {
+            if (GraphicsSliderText.name == "CurrentSetting")
+            {
+                GraphicsSliderText.text = QualitySettings.names[newVal];
+            }
+        }
+    }
+
 	// Update is called once per frame
 	void Update () {
+    }
+
+    void SetValuesFromGameSaveSettings()
+    {
+        //set text value
+        GameObject GraphicsSlider = GameObject.Find("GraphicsSlider");
+        Text[] GraphicsSliderTexts = GraphicsSlider.GetComponentsInChildren<Text>();
+        GraphicsSlider.GetComponentInChildren<Slider>().value = QualitySettings.GetQualityLevel();//set from quality settings
+        foreach (Text GraphicsSliderText in GraphicsSliderTexts)
+        {
+            if (GraphicsSliderText.name == "CurrentSetting")
+            {
+                GraphicsSliderText.text = QualitySettings.names[QualitySettings.GetQualityLevel()];//set from quality settings
+            }
+        }
     }
 
     public void ResumeGame() {
@@ -68,8 +100,7 @@ public class PauseMenu : MonoBehaviour {
         //gameMusic.volume = newVal;
         //Debug.Log(newVal);
     }
-
-
+    
     public void QuitGame() {
         Application.Quit();
     }
