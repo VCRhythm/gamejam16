@@ -1,26 +1,29 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class FreezeTower : Tower {
+public class BigCheeseRay : Tower {
 
     private float nextFire;
-    public float slowRate = 1f;
+
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         //generic stats to be changed
-        health = 10;
-        damage = .5f;
-        range = 15;
-        fireRate = 1.25f;
+        health = 300;
+        damage = 30;
+        cost = 200;
+        range = 8;
+        fireRate = 2f;
+        upgradeDamage = 3;
         upgradeHealth = 10;
-        upgradeDamage = .1f;
         maxLevel = 5;
         target = null;
         nextFire = 0;
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update()
+    {
         //check if tower has target
         if (!target)
         {
@@ -40,34 +43,26 @@ public class FreezeTower : Tower {
                 //fire at target
                 if (nextFire < Time.time)
                 {
-                    if (target.GetComponent<EnemyMovement>().towerSlowModifier == 1f)
-                    {
-                        Fire();
-                        nextFire = Time.time + fireRate;
-                    }
+                    Fire();
+                    nextFire = Time.time + fireRate;
                 }
             }
         }
     }
 
+    //add to stats if upgraded
     override public void Upgrade()
     {
-        //increase slow time
-        if (level < maxLevel)
-        {
-            level++;
-            damage -= upgradeDamage;
-            health += upgradeHealth;
-        }
+        level++;
+        health += upgradeHealth;
+        damage += upgradeDamage;
     }
 
     protected override void Fire()
     {
         if (target)
         {
-            EnemyMovement mover = target.GetComponent<EnemyMovement>();
-            mover.towerSlowModifier = .25f;
-            mover.slowTimer = Time.time + slowRate;
+            target.GetComponent<Creature>().TakeDamage((int)damage);
         }
     }
 }

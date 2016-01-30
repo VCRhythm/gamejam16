@@ -12,12 +12,6 @@ public class WallTower : Tower
         maxLevel = 5;
     }
 
-
-    override protected GameObject GetTarget()
-    {
-        return null;
-    }
-
     override public void Upgrade()
     {
         level++;
