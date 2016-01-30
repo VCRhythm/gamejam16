@@ -1,30 +1,28 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GunTower : Tower {
+public class FreezeTower : Tower {
 
     private float nextFire;
-
-	// Use this for initialization
-	void Start ()
-    {
+    public float slowRate = 1f;
+    // Use this for initialization
+    void Start () {
         //generic stats to be changed
         health = 10;
-        damage = 1;
-        range = 5;
-        fireRate = 1f;
-        upgradeDamage = 3;
+        damage = .5f;
+        range = 15;
+        fireRate = 1.25f;
         upgradeHealth = 10;
+        upgradeDamage = .1f;
         maxLevel = 5;
         target = null;
         nextFire = 0;
-	}
+    }
 	
 	// Update is called once per frame
-	void Update ()
-    {
+	void Update () {
         //check if tower has target
-	    if (!target)
+        if (!target)
         {
             //get a new target
             target = GetTarget();
@@ -42,12 +40,26 @@ public class GunTower : Tower {
                 //fire at target
                 if (nextFire < Time.time)
                 {
-                    Fire();
-                    nextFire = Time.time + fireRate;
+                    if (target.GetComponent<EnemyMovement>().towerSlowModifier == 1f)
+                    {
+                        Fire();
+                        nextFire = Time.time + fireRate;
+                    }
                 }
             }
         }
-	}
+    }
+
+    override public void Upgrade()
+    {
+        //increase slow time
+        if (level < maxLevel)
+        {
+            level++;
+            damage -= upgradeDamage;
+            health += upgradeHealth;
+        }
+    }
 
     override protected GameObject GetTarget()
     {
@@ -70,19 +82,13 @@ public class GunTower : Tower {
         return null;
     }
 
-    //add to stats if upgraded
-    override public void Upgrade()
-    {
-        level++;
-        health += upgradeHealth;
-        damage += upgradeDamage;
-    }
-
     protected override void Fire()
     {
         if (target)
         {
-            target.GetComponent<Creature>().TakeDamage((int)damage);
+            EnemyMovement mover = target.GetComponent<EnemyMovement>();
+            mover.towerSlowModifier = .25f;
+            mover.slowTimer = Time.time + slowRate;
         }
     }
 }
