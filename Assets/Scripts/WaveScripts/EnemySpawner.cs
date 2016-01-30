@@ -7,7 +7,7 @@ public class EnemySpawner : MonoBehaviour {
     public float timeBetweenSpawns = 1f;
     SpawnPoint[] spawnPoints;
 
-    void Start()
+    void OnEnable()
     {
         spawnPoints = GetComponentsInChildren<SpawnPoint>();
         SpawnEnemies(spawnCount);
