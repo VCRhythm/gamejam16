@@ -33,8 +33,7 @@ public class LightAutoIntensity : MonoBehaviour
     Material skyMat;
     DayNight DayNightScript;
 
-    public EnemySpawner enemySpawner;
-
+    public EnemySpawner enemySpawn;
     void Start()
     {
         DayNightScript = GetComponent<DayNight>();
@@ -93,7 +92,7 @@ public class LightAutoIntensity : MonoBehaviour
 
         TransitionUpdate();
 
-        enemySpawner.enabled = false;
+        enemySpawn.enabled = false;
 
         //toggle stars
         if (transform.eulerAngles.x > 20 && transform.eulerAngles.x < 100) {
@@ -113,7 +112,7 @@ public class LightAutoIntensity : MonoBehaviour
 
         TransitionUpdate();
 
-        enemySpawner.enabled = true;
+        enemySpawn.enabled = true;
 
         //toggle stars
         if (transform.eulerAngles.x < 360 && transform.eulerAngles.x > 350)
