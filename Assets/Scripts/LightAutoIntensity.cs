@@ -47,11 +47,11 @@ public class LightAutoIntensity : MonoBehaviour
     {
         if (Debug.isDebugBuild)
         {
-            if (Input.GetKeyDown(KeyCode.A))
+            if (Input.GetKeyDown(KeyCode.O))
             {
                 SetTranstion(0);
             }
-            if (Input.GetKeyDown(KeyCode.D))
+            if (Input.GetKeyDown(KeyCode.P))
             {
                 SetTranstion(1);
             }
