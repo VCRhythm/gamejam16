@@ -17,7 +17,7 @@ public class Creature : MonoBehaviour {
 
     void Start()
     {
-        TransformExtensions.Register(transform, GetComponent<Collider>());
+        transform.Register();
     }
 
     public void TakeDamage(int damage)
