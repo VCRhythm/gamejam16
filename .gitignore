@@ -36,3 +36,6 @@ Temp
 *.csproj
 *.pidb
 *.sln
+
+GameJame16/Library/*
+GameJame16/Temp/*
