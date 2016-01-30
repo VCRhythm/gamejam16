@@ -10,6 +10,10 @@ public class EnemySpawner : MonoBehaviour {
     void Start()
     {
         spawnPoints = GetComponentsInChildren<SpawnPoint>();
+    }
+
+    void OnEnable()
+    {
         SpawnEnemies(spawnCount);
     }
 
