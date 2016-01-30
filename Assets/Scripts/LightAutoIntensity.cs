@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class LightAutoIntensity : MonoBehaviour
 {
@@ -32,15 +31,21 @@ public class LightAutoIntensity : MonoBehaviour
     Skybox sky;
     Material skyMat;
     DayNight DayNightScript;
-    void Start()
+
+    void Awake()
     {
         DayNightScript = GetComponent<DayNight>();
         DayNightScript.stars.SetActive(false);
+
         transform.eulerAngles = new Vector3(20, 0, 0);
-        //SetTranstion(0);
+        
         mainLight = GetComponent<Light>();
         skyMat = RenderSettings.skybox;
+    }
 
+    void Start()
+    {
+        SetTransition(0);
     }
 
     void Update()
@@ -49,49 +54,25 @@ public class LightAutoIntensity : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.O))
             {
-                SetTranstion(0);
+                SetTransition(0);
             }
             if (Input.GetKeyDown(KeyCode.P))
             {
-                SetTranstion(1);
+                SetTransition(1);
             }
         }
-        transitionDayState();
 
+        TransitionDayState();
     }
 
-    void transitionDayState()
-    {
-        if (dayState == 0 && transitionFlag == 1)
-        {
-            transitionToDay();
-        }
-        else if (dayState == 1 && transitionFlag == 1)
-        {
-            transitionToNight();
-        }
-    }
-
-    public void SetTranstion(int val) {
-        if (val == 0)
-        {
-            dayState = 0;
-            transitionFlag = 1;
-        }
-        else if (val == 1)
-        {
-            dayState = 1;
-            transitionFlag = 1;
-        }
-    }
-
-    void transitionToDay()
+    public void TransitionToDay()
     {
 
         TransitionUpdate();
 
         //toggle stars
-        if (transform.eulerAngles.x > 20 && transform.eulerAngles.x < 100) {
+        if (transform.eulerAngles.x > 20 && transform.eulerAngles.x < 100)
+        {
             DayNightScript.stars.SetActive(false);
         }
         //end transition on condition
@@ -103,7 +84,7 @@ public class LightAutoIntensity : MonoBehaviour
         dayState = 0;
     }
 
-    void transitionToNight()
+    public void TransitionToNight()
     {
 
         TransitionUpdate();
@@ -119,6 +100,31 @@ public class LightAutoIntensity : MonoBehaviour
             transitionFlag = 0;
         }
         dayState = 1;
+    }
+
+    void TransitionDayState()
+    {
+        if (dayState == 0 && transitionFlag == 1)
+        {
+            TransitionToDay();
+        }
+        else if (dayState == 1 && transitionFlag == 1)
+        {
+            TransitionToNight();
+        }
+    }
+
+    void SetTransition(int val) {
+        if (val == 0)
+        {
+            dayState = 0;
+            transitionFlag = 1;
+        }
+        else if (val == 1)
+        {
+            dayState = 1;
+            transitionFlag = 1;
+        }
     }
 
     void TransitionUpdate() {

@@ -10,10 +10,10 @@ public class CreatureMovement : MonoBehaviour {
     const int enemyLayer = 1 << 8;
     const int structureLayer = 1 << 9;
     const int playerLayer = 1 << 11;
-    LayerMask movementCheckLayer = enemyLayer | structureLayer | playerLayer;
+    protected LayerMask movementCheckLayer = enemyLayer | structureLayer | playerLayer;
 
     Rigidbody rbody;
-    Transform model;
+    protected Transform model;
 
     protected virtual void Awake()
     {
@@ -32,9 +32,9 @@ public class CreatureMovement : MonoBehaviour {
         return false;
     }
 
-    bool CanMoveInDirection(Vector3 direction)
+    protected virtual bool CanMoveInDirection(Vector3 direction)
     {
-        Transform obstacle = model.GetTransformInDirection(model.forward * checkForCollisionStartDistance, direction, checkForCollisionDistance, movementCheckLayer);
+        Transform obstacle = model.GetTransformInDirectionWithThreeRaycasts(model.forward * checkForCollisionStartDistance, direction, checkForCollisionDistance, movementCheckLayer);
         return !obstacle;
     }
 

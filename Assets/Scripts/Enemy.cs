@@ -64,6 +64,10 @@ public class Enemy : Creature {
                 {
                     FocusOnTag(obstacleTransform.tag);
                 }
+                else if(obstacleTransform.CompareTag("Player"))
+                {
+                    FocusOnTag("HomeBase");
+                }
             }
 
             enemyMovement.Move(heading, 1);
@@ -91,7 +95,7 @@ public class Enemy : Creature {
 
     Transform LookAheadForObjects(Vector3 heading)
     {
-        return model.GetTransformInDirection(model.forward * lookAheadStartDistance, heading, lookAheadDistance, lookLayer);
+        return model.GetTransformInDirectionWithThreeRaycasts(model.forward * lookAheadStartDistance, heading, lookAheadDistance, lookLayer);
     }
 
     void FocusOnTag(string tag)

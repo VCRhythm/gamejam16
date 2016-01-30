@@ -69,7 +69,7 @@ public static class TransformExtensions {
         return creatureScriptLookupFromTransform[t];
     }
 
-    public static Transform GetTransformInDirection(this Transform trans, Vector3 localStart, Vector3 direction, float distance, int layer)
+    public static Transform GetTransformInDirectionWithThreeRaycasts(this Transform trans, Vector3 localStart, Vector3 direction, float distance, int layer)
     {
         RaycastHit[] hits = new RaycastHit[3];
 
@@ -82,6 +82,20 @@ public static class TransformExtensions {
             Physics.Raycast(trans.position + localStart, direction, out hits[2], distance, layer))
         {
             return hits[0].transform ?? hits[1].transform ?? hits[2].transform;
+        }
+
+        return null;
+    }
+
+    public static Transform GetTransformInDirection(this Transform trans, Vector3 localStart, Vector3 direction, float distance, int layer)
+    {
+        RaycastHit hit;
+
+        Debug.DrawRay(trans.position + localStart, direction * distance, Color.green);
+
+        if (Physics.Raycast(trans.position + localStart, direction, out hit, distance, layer))
+        {
+            return hit.transform;
         }
 
         return null;

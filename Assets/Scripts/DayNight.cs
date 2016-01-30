@@ -1,21 +1,40 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class DayNight : MonoBehaviour {
     
-
-    Material sky;
     public GameObject stars;
-    void Start()
+    public bool isDay { get; private set; }
+
+    LightAutoIntensity lightAutoIntensity;
+    float startTime;
+    float dayTime = 120;
+    float nightTime = 120;
+
+    void Awake()
     {
-        sky = RenderSettings.skybox;
+        lightAutoIntensity = GetComponentInChildren<LightAutoIntensity>();
     }
 
-    bool lighton = false;
-
-    // Update is called once per frame
     void Update()
     {
         stars.transform.rotation = transform.rotation;
+    }
+
+    void StartDay()
+    {
+        isDay = true;
+        lightAutoIntensity.TransitionToDay();
+        startTime = Time.time;
+
+        Invoke("StartNight", dayTime);
+    }
+
+    void StartNight()
+    {
+        isDay = false;
+        lightAutoIntensity.TransitionToNight();
+        startTime = Time.time;
+
+        Invoke("StartDay", nightTime);
     }
 }

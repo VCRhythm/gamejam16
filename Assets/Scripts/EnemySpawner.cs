@@ -6,15 +6,16 @@ public class EnemySpawner : MonoBehaviour {
     public int spawnCount = 1;
     public float timeBetweenSpawns = 1f;
     SpawnPoint[] spawnPoints;
+    Enemy[] enemiesToSpawn;
 
-    void Start()
+    void Awake()
     {
         spawnPoints = GetComponentsInChildren<SpawnPoint>();
-        SpawnEnemies(spawnCount);
     }
 
-    void SpawnEnemies(int count)
+    public void SpawnEnemies(Enemy[] enemies, int count)
     {
+        enemiesToSpawn = enemies;
         StartCoroutine(StartSpawning(count));
     }
 
@@ -30,11 +31,16 @@ public class EnemySpawner : MonoBehaviour {
     void SpawnEnemy()
     {
         SpawnPoint spawnPoint = GetSpawnPoint();
-        spawnPoint.Spawn();
+        spawnPoint.Spawn(GetEnemy());
     }
 
     SpawnPoint GetSpawnPoint()
     {
         return spawnPoints[Random.Range(0, spawnPoints.Length)];
-    }    
+    }
+
+    Enemy GetEnemy()
+    {
+        return enemiesToSpawn[Random.Range(0, enemiesToSpawn.Length)];
+    }
 }
