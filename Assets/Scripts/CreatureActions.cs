@@ -23,6 +23,8 @@ public class CreatureActions : MonoBehaviour {
 
     public void Attack()
     {
+        if (Time.time - lastAttack <= attackAnimationLength) return;
+
         lastAttack = Time.time;
         Collider[] attackedColliders = GetCreatureCollidersInAttackRadius();
         Damage(attackedColliders);

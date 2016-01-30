@@ -21,6 +21,9 @@ public class CameraMovement : MonoBehaviour
 
     void FollowTarget()
     {
-        transform.position = Vector3.SmoothDamp(transform.position, target.position + targetOffset, ref currentVelocity, dampTime * Time.deltaTime);
+        if (target)
+        {
+            transform.position = Vector3.SmoothDamp(transform.position, target.position + targetOffset, ref currentVelocity, dampTime * Time.deltaTime);
+        }
     }
 }

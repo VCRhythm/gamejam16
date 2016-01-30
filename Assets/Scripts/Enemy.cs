@@ -1,10 +1,11 @@
 ﻿public class Enemy : Creature {
-    public bool stayOnPlayer = true;
-
     EnemyMovement enemyMovement;
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
+        color = AssignColor();
         enemyMovement = GetComponent<EnemyMovement>();
     }
 
@@ -12,7 +13,7 @@
     {
         base.TakeDamage(damage);
 
-        if(health > 0 && stayOnPlayer)
+        if(health > 0)
         {
             enemyMovement.FocusOnTag("Player");
         }

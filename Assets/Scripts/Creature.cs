@@ -3,16 +3,18 @@
 public class Creature : MonoBehaviour, IDamageable {
 
     public int health = 3;
-    public Material damagedMaterial;
+    public Color damagedColor;
+    public Color[] colors;
 
-    MeshRenderer meshRenderer;
-    Material originalMaterial;
-    bool isShowingDamage = false;
+    public Color color { get { return meshRenderer.material.color; } set { meshRenderer.material.color = value; } }
 
-    void Awake()
+    protected MeshRenderer meshRenderer;
+    protected int colorIndex;
+    protected bool isShowingDamage = false;
+
+    protected virtual void Awake()
     {
         meshRenderer = GetComponentInChildren<MeshRenderer>();
-        originalMaterial = meshRenderer.material;
     }
 
     void Start()
@@ -39,14 +41,14 @@ public class Creature : MonoBehaviour, IDamageable {
         if (isShowingDamage) return;
 
         isShowingDamage = true;
-        meshRenderer.material = damagedMaterial;
+        meshRenderer.material.color = damagedColor;
 
         Invoke("HideDamage", 1f);
     }
 
     void HideDamage()
     {
-        meshRenderer.material = originalMaterial;
+        meshRenderer.material.color = colors[colorIndex];
         isShowingDamage = false;
     }
 
@@ -54,4 +56,11 @@ public class Creature : MonoBehaviour, IDamageable {
     {
         Destroy(gameObject);
     }
+
+    protected Color AssignColor()
+    {
+        colorIndex = Random.Range(0, colors.Length);
+        return colors[colorIndex];
+    }
+
 }
