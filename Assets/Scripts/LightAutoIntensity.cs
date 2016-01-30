@@ -32,6 +32,9 @@ public class LightAutoIntensity : MonoBehaviour
     Skybox sky;
     Material skyMat;
     DayNight DayNightScript;
+
+    public EnemySpawner enemySpawner;
+
     void Start()
     {
         DayNightScript = GetComponent<DayNight>();
@@ -90,6 +93,8 @@ public class LightAutoIntensity : MonoBehaviour
 
         TransitionUpdate();
 
+        enemySpawner.enabled = false;
+
         //toggle stars
         if (transform.eulerAngles.x > 20 && transform.eulerAngles.x < 100) {
             DayNightScript.stars.SetActive(false);
@@ -107,6 +112,8 @@ public class LightAutoIntensity : MonoBehaviour
     {
 
         TransitionUpdate();
+
+        enemySpawner.enabled = true;
 
         //toggle stars
         if (transform.eulerAngles.x < 360 && transform.eulerAngles.x > 350)
