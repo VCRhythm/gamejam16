@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System;
 
-public abstract class Tower : MonoBehaviour {
+public abstract class Tower : MonoBehaviour, IDamageable {
 
     public int damage;
     public int health;
@@ -19,6 +19,23 @@ public abstract class Tower : MonoBehaviour {
     protected int upgradeDamage;
     protected int upgradeHealth;
 
+    //Damage display
+    public Material damagedMaterial;
+    Material originalMaterial;
+    MeshRenderer meshRenderer;
+    bool isShowingDamage = false;
+
+    void Awake()
+    {
+        meshRenderer = GetComponentInChildren<MeshRenderer>();
+        originalMaterial = meshRenderer.material;
+    }
+
+    void Start()
+    {
+        transform.Register();
+    }
+
     virtual public void Upgrade()
     {
 
@@ -30,4 +47,31 @@ public abstract class Tower : MonoBehaviour {
     }
 
     protected abstract GameObject GetTarget();
+
+    #region IDamageable Interface
+
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+        ShowDamage();
+    }
+    
+    #endregion
+
+    protected void ShowDamage()
+    {
+        if (isShowingDamage) return;
+
+        isShowingDamage = true;
+        meshRenderer.material = damagedMaterial;
+
+        Invoke("HideDamage", 1f);
+    }
+
+    void HideDamage()
+    {
+        meshRenderer.material = originalMaterial;
+        isShowingDamage = false;
+    }
+
 }

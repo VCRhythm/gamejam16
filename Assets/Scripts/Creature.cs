@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Creature : MonoBehaviour {
+public class Creature : MonoBehaviour, IDamageable {
 
     public int health = 3;
     public Material damagedMaterial;
@@ -20,7 +20,7 @@ public class Creature : MonoBehaviour {
         transform.Register();
     }
 
-    public void TakeDamage(int damage)
+    public virtual void TakeDamage(int damage)
     {
         health -= damage;
 

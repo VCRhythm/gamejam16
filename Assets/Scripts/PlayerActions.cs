@@ -10,6 +10,7 @@ public class PlayerActions : CreatureActions {
         base.Awake();
 
         input = GetComponent<PlayerInput>();
+        attackLayer = enemyLayer;
     }
 
     void FixedUpdate()

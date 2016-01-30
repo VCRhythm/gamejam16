@@ -8,10 +8,9 @@ public class EnemyTarget : MonoBehaviour
     //This target only interacts with enemy layer (set in Unity's physics)
     public void OnTriggerEnter(Collider other)
     {
-        if (other.GetCreature() == targetEnemy)
+        if (other.GetEnemy() == targetEnemy)
         {
             Destroy(gameObject);
         }
     }
-
 }
