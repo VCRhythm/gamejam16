@@ -41,8 +41,8 @@ public class EnemyMovement : CreatureMovement {
         if (target != null)
         {
             Vector3 heading = (target.position - transform.position).normalized;
-            Transform obstacleTransform;
 
+            Transform obstacleTransform;
             if (!Move(heading, baseMoveModifier, out obstacleTransform))
             {
                 if(ShouldAvoid(obstacleTransform))
@@ -53,7 +53,7 @@ public class EnemyMovement : CreatureMovement {
                 {
                     enemyActions.Attack();
 
-                    if (enemy.stayOnPlayer)
+                    if (ShouldFollow(obstacleTransform))
                     {
                         FocusOnTag(obstacleTransform.tag);
                     }
@@ -91,8 +91,8 @@ public class EnemyMovement : CreatureMovement {
 
     Transform SetPrimaryTarget()
     {
-        return GameObject.FindWithTag(primaryTargetTag).transform;
-
+        GameObject target = GameObject.FindWithTag(primaryTargetTag);
+        return target ? target.transform : null;
     }
 
     bool ShouldAvoid(Transform obstacleTransform)
@@ -103,6 +103,11 @@ public class EnemyMovement : CreatureMovement {
     bool ShouldAttack(Transform obstacleTransform)
     {
         return attackTags.Contains(obstacleTransform.tag);
+    }
+
+    bool ShouldFollow(Transform obstacleTransform)
+    {
+        return obstacleTransform.CompareTag("Player") && obstacleTransform.GetCreature().color == (enemy as Creature).color;
     }
 
     AvoidTurn RandomPreferredTurn()

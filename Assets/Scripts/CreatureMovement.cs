@@ -55,7 +55,8 @@ public class CreatureMovement : MonoBehaviour {
 
     void SmoothLook(Vector3 direction)
     {
-        model.rotation = Quaternion.Lerp(model.rotation, Quaternion.LookRotation(direction), turnModifier * Time.deltaTime);
+        Quaternion lookRotation = Quaternion.LookRotation(direction);
+        model.rotation = Quaternion.Lerp(model.rotation, lookRotation, turnModifier * Time.deltaTime);
     }
 
     Transform GetTransformInDirection(Vector3 direction)

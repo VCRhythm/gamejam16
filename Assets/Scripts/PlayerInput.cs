@@ -5,9 +5,11 @@ public class PlayerInput : MonoBehaviour {
     public float verticalInput { get; private set; }
     public bool isAttacking { get; private set; }
     public bool isRunning { get; private set; }
+    public float colorCycle { get; private set; }
 
     void Update ()
     {
+        colorCycle = Input.GetAxisRaw("Cycle Color");
         isRunning = Input.GetButton("Run");
         isAttacking = Input.GetButtonDown("Attack");
         horizontalInput = Input.GetAxis("Horizontal");
