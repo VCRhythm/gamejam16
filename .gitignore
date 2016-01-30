@@ -16,3 +16,23 @@
 sysinfo.txt
 LurkTestBuild/ProjectSettings/ProjectVersion.txt
 LurkTestBuild/ProjectSettings/ProjectSettings.asset
+
+
+# Unity3D .gitignore file.
+# Store this file at the root of your local repository.
+.DS_Store
+GameJame16/Library/AssetImportState
+GameJame16/Library/AssetServerCacheV3
+GameJame16/Library/FailedAssetImports.txt
+GameJame16/Library/ScriptAssemblies
+GameJame16/Library/ScriptMapper
+GameJame16/Library/assetDatabase3
+GameJame16/Library/cache
+GameJame16/Library/expandedItems
+GameJame16/Library/metadata
+GameJame16/Library/previews
+GameJame16/Library/guidmapper
+Temp
+*.csproj
+*.pidb
+*.sln
