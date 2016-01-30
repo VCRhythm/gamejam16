@@ -1,31 +1,31 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CheeseRay : Tower {
+public class Deth : Tower {
 
     private float nextFire;
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start()
     {
         //generic stats to be changed
-        health = 100;
-        damage = 10;
-        cost = 40;
-        range = 5;
-        fireRate = 1f;
+        health = 300;
+        damage = 20;
+        cost = 300;
+        range = 15;
+        fireRate = .5f;
         upgradeDamage = 3;
         upgradeHealth = 10;
         maxLevel = 5;
         target = null;
         nextFire = 0;
-	}
-	
-	// Update is called once per frame
-	void Update ()
+    }
+
+    // Update is called once per frame
+    void Update()
     {
         //check if tower has target
-	    if (!target)
+        if (!target)
         {
             //get a new target
             target = GetTarget();
@@ -48,7 +48,7 @@ public class CheeseRay : Tower {
                 }
             }
         }
-	}
+    }
 
     //add to stats if upgraded
     override public void Upgrade()

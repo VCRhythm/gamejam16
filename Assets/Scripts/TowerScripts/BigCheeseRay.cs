@@ -50,27 +50,6 @@ public class BigCheeseRay : Tower {
         }
     }
 
-    override protected GameObject GetTarget()
-    {
-        GameObject closestTarget;
-        Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, range, enemyLayer);
-        if (enemiesInRange.Length > 0)
-        {
-            //get closest enemy
-            closestTarget = enemiesInRange[0].gameObject;
-            for (int i = 0; i < enemiesInRange.Length; i++)
-            {
-                GameObject nextTarget = enemiesInRange[i].gameObject;
-                if ((nextTarget.transform.position - transform.position).magnitude < (closestTarget.transform.position - transform.position).magnitude)
-                {
-                    closestTarget = nextTarget;
-                }
-            }
-            return closestTarget;
-        }
-        return null;
-    }
-
     //add to stats if upgraded
     override public void Upgrade()
     {

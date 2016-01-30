@@ -40,10 +40,4 @@ public class Homebase : Tower
         nextHealTime = Time.time + healRate;
     }
 
-
-
-    protected override GameObject GetTarget()
-    {
-        throw new NotImplementedException();
-    }
 }
