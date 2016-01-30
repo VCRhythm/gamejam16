@@ -8,7 +8,7 @@ public class Player : Creature {
     public int foodCount = 0;
     public float colorCycleCooldown = 1f;
 
-    int maxFoodCount;
+    int maxFoodCount = 300;
     float lastColorCycle;
 
     protected override void Awake()
