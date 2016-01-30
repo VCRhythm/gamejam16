@@ -18,7 +18,7 @@ public class EnemyMovement : CreatureMovement {
 
     EnemyTarget creatureTarget;
     List<string> avoidTags = new List<string> { "Obstacle", "Enemy" };
-    string playerTag = "Player";
+    List<string> attackTags = new List<string> { "Player", "HomeBase", "Tower" };
 
     Enemy enemy;
     EnemyActions enemyActions;
@@ -43,7 +43,7 @@ public class EnemyMovement : CreatureMovement {
             Vector3 heading = (target.position - transform.position).normalized;
             Transform obstacleTransform;
 
-            if (!Move(heading, out obstacleTransform))
+            if (!Move(heading, baseMoveModifier, out obstacleTransform))
             {
                 if(ShouldAvoid(obstacleTransform))
                 {
@@ -55,8 +55,7 @@ public class EnemyMovement : CreatureMovement {
 
                     if (enemy.stayOnPlayer)
                     {
-                        primaryTargetTag = obstacleTransform.tag;
-                        target = SetPrimaryTarget();
+                        FocusOnTag(obstacleTransform.tag);
                     }
                 }
             }
@@ -67,12 +66,25 @@ public class EnemyMovement : CreatureMovement {
         }
     }
 
+    public void FocusOnTag(string tag)
+    {
+        primaryTargetTag = tag;
+        target = SetPrimaryTarget();
+    }
+
+    #region Private Functions
+
     Transform CreateAvoidanceTarget(Vector3 heading)
     {
-        if (creatureTarget) return creatureTarget.transform;
-
-        creatureTarget =  Instantiate(targetPrefab, transform.position + Quaternion.Euler(0, (int)preferredTurn * turnAngle, 0) * heading * 5, Quaternion.identity) as EnemyTarget;
-        creatureTarget.targetEnemy = creature as Enemy;
+        if (creatureTarget)
+        {
+            creatureTarget.transform.position = GetRotatedHeading(heading);
+        }
+        else
+        {
+            creatureTarget = Instantiate(targetPrefab, GetRotatedHeading(heading), Quaternion.identity) as EnemyTarget;
+            creatureTarget.targetEnemy = enemy;
+        }
 
         return creatureTarget.transform;
     } 
@@ -90,11 +102,18 @@ public class EnemyMovement : CreatureMovement {
 
     bool ShouldAttack(Transform obstacleTransform)
     {
-        return obstacleTransform.CompareTag(playerTag);
+        return attackTags.Contains(obstacleTransform.tag);
     }
 
     AvoidTurn RandomPreferredTurn()
     {
         return Random.Range(0,2) == 0 ? AvoidTurn.Left : AvoidTurn.Right;
     }
+
+    Vector3 GetRotatedHeading(Vector3 heading)
+    {
+        return transform.position + Quaternion.Euler(0, (int)preferredTurn * turnAngle, 0) * heading * 5;
+    }
+
+    #endregion
 }

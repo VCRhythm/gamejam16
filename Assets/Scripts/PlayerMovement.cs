@@ -3,6 +3,7 @@
 [RequireComponent(typeof(PlayerInput))]
 public class PlayerMovement : CreatureMovement {
 
+    public float runModifier = 2f;
     PlayerInput input;
 
     protected override void Awake()
@@ -14,16 +15,16 @@ public class PlayerMovement : CreatureMovement {
 	
 	void FixedUpdate ()
     {
-        Vector3 movement = GetInput();
+        Vector3 movement = GetMovementInput();
 
         if (movement != Vector3.zero)
         {
             Transform obstacleTransform;
-            Move(movement, out obstacleTransform);
+            Move(movement, baseMoveModifier * (input.isRunning ? runModifier : 1), out obstacleTransform);
         }
 	}
 
-    Vector3 GetInput()
+    Vector3 GetMovementInput()
     {
         return new Vector3(input.horizontalInput, 0, input.verticalInput);
     }
