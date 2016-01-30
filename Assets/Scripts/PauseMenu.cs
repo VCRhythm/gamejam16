@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using UnityEngine.UI;
 public class PauseMenu : MonoBehaviour {
 
     public Canvas PauseMenuView;
     public Canvas OptionMenuView;
     public Canvas QuitConfirmView;
+    //public AudioSource gameMusic; // TODO: add music
+
     // Use this for initialization
     void Start () {
         Time.timeScale = 0;//pause game
@@ -26,25 +28,47 @@ public class PauseMenu : MonoBehaviour {
         Time.timeScale = 1;//resume game
     }
 
-    public void SwitchToQuitConfirmation() {
-        PauseMenuView.gameObject.SetActive(false);
-        OptionMenuView.gameObject.SetActive(false);
+    public void SwitchToQuitConfirmation()
+    {
+        HideAllPauseMenuScreens();
         QuitConfirmView.gameObject.SetActive(true);
     }
 
     public void SwitchToPauseMenu()
     {
+        HideAllPauseMenuScreens();
         PauseMenuView.gameObject.SetActive(true);
-        OptionMenuView.gameObject.SetActive(false);
-        QuitConfirmView.gameObject.SetActive(false);
     }
 
     public void SwitchToOptionsMenu()
     {
-        PauseMenuView.gameObject.SetActive(false);
+        HideAllPauseMenuScreens();
         OptionMenuView.gameObject.SetActive(true);
-        QuitConfirmView.gameObject.SetActive(false);
     }
+
+    void HideAllPauseMenuScreens()
+    {
+        GameObject[] screens = GameObject.FindGameObjectsWithTag("PauseMenuScreen");
+        foreach (GameObject screen in screens)
+        {
+            screen.SetActive(false);
+        }
+    }
+
+    public void AdjustSoundVolume()
+    {
+        float newVal = GameObject.Find("SoundSlider").GetComponentInChildren<Slider>().value;
+        AudioListener.volume = newVal;
+        //Debug.Log(newVal);
+    }
+
+    public void AdjustMusicVolume()
+    {
+        float newVal = GameObject.Find("MusicSlider").GetComponentInChildren<Slider>().value;
+        //gameMusic.volume = newVal;
+        //Debug.Log(newVal);
+    }
+
 
     public void QuitGame() {
         Application.Quit();
