@@ -9,8 +9,8 @@ public class GunTower : Tower {
 	void Start ()
     {
         //generic stats to be changed
-        health = 100;
-        damage = 15;
+        health = 10;
+        damage = 1;
         range = 5;
         fireRate = 1f;
         upgradeDamage = 3;
@@ -80,12 +80,9 @@ public class GunTower : Tower {
 
     protected override void Fire()
     {
-        RaycastHit hit;
-        Physics.Raycast(transform.position, target.transform.position - transform.position, out hit, 5, enemyLayer);
-        if (hit.collider.gameObject)
+        if (target)
         {
-            Debug.Log("Hit enemy");
-            //add damage to enemy
+            target.GetComponent<Creature>().TakeDamage(damage);
         }
     }
 }
