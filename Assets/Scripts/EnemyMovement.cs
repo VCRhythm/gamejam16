@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
 
 public class EnemyMovement : CreatureMovement {
 
-    public string primaryTargetTag = "HomeBase";
     public EnemyTarget targetPrefab;
+    EnemyTarget enemyTarget;
 
     private enum AvoidTurn
     {
@@ -12,23 +11,16 @@ public class EnemyMovement : CreatureMovement {
         Right = 1
     }
 
-    Transform target;
     float turnAngle = 75;
     AvoidTurn preferredTurn;
 
-    EnemyTarget creatureTarget;
-    List<string> avoidTags = new List<string> { "Obstacle", "Enemy" };
-    List<string> attackTags = new List<string> { "Player", "HomeBase", "Tower" };
-
     Enemy enemy;
-    EnemyActions enemyActions;
 
     protected override void Awake()
     {
         base.Awake();
 
         enemy = GetComponent<Enemy>();
-        enemyActions = GetComponent<EnemyActions>();
     }
 
     void Start()
@@ -36,79 +28,22 @@ public class EnemyMovement : CreatureMovement {
         preferredTurn = RandomPreferredTurn();
     }
 
-    void FixedUpdate()
+    public Transform CreateAvoidanceTarget(Vector3 heading)
     {
-        if (target != null)
+        if (enemyTarget)
         {
-            Vector3 heading = (target.position - transform.position).normalized;
-
-            Transform obstacleTransform;
-            if (!Move(heading, baseMoveModifier, out obstacleTransform))
-            {
-                if(ShouldAvoid(obstacleTransform))
-                {
-                    target = CreateAvoidanceTarget(heading);
-                }
-                else if(ShouldAttack(obstacleTransform))
-                {
-                    enemyActions.Attack();
-
-                    if (ShouldFollow(obstacleTransform))
-                    {
-                        FocusOnTag(obstacleTransform.tag);
-                    }
-                }
-            }
+            enemyTarget.transform.position = GetRotatedHeading(heading);
         }
         else
         {
-            target = SetPrimaryTarget();
+            enemyTarget = Instantiate(targetPrefab, GetRotatedHeading(heading), Quaternion.identity) as EnemyTarget;
+            enemyTarget.targetEnemy = enemy;
         }
-    }
 
-    public void FocusOnTag(string tag)
-    {
-        primaryTargetTag = tag;
-        target = SetPrimaryTarget();
+        return enemyTarget.transform;
     }
 
     #region Private Functions
-
-    Transform CreateAvoidanceTarget(Vector3 heading)
-    {
-        if (creatureTarget)
-        {
-            creatureTarget.transform.position = GetRotatedHeading(heading);
-        }
-        else
-        {
-            creatureTarget = Instantiate(targetPrefab, GetRotatedHeading(heading), Quaternion.identity) as EnemyTarget;
-            creatureTarget.targetEnemy = enemy;
-        }
-
-        return creatureTarget.transform;
-    } 
-
-    Transform SetPrimaryTarget()
-    {
-        GameObject target = GameObject.FindWithTag(primaryTargetTag);
-        return target ? target.transform : null;
-    }
-
-    bool ShouldAvoid(Transform obstacleTransform)
-    {
-        return avoidTags.Contains(obstacleTransform.tag);
-    }
-
-    bool ShouldAttack(Transform obstacleTransform)
-    {
-        return attackTags.Contains(obstacleTransform.tag);
-    }
-
-    bool ShouldFollow(Transform obstacleTransform)
-    {
-        return obstacleTransform.CompareTag("Player") && obstacleTransform.GetCreature().color == (enemy as Creature).color;
-    }
 
     AvoidTurn RandomPreferredTurn()
     {

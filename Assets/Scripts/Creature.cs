@@ -4,13 +4,13 @@ public class Creature : MonoBehaviour, IDamageable {
 
     public int health = 3;
     public Color damagedColor;
-    public Color[] colors;
 
-    public Color color { get { return meshRenderer.material.color; } set { meshRenderer.material.color = value; } }
+    public Color color { get { return colors[colorIndex]; } set { meshRenderer.material.color = value; } }
 
     protected MeshRenderer meshRenderer;
     protected int colorIndex;
     protected bool isShowingDamage = false;
+    protected Color[] colors = new Color[3] { Color.blue, Color.red, Color.yellow };
 
     protected virtual void Awake()
     {

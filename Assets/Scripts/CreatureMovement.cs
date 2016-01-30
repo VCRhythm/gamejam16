@@ -20,31 +20,22 @@ public class CreatureMovement : MonoBehaviour {
         SetUpComponents();
     }
 
-    protected bool Move(Vector3 direction, float moveModifier, out Transform obstacleTransform)
+    public virtual bool Move(Vector3 direction, float moveModifier)
     {
         SmoothLook(direction);
 
-        if (CanMoveInDirection(direction, out obstacleTransform))
+        if (CanMoveInDirection(direction))
         {
-            rbody.MovePosition(rbody.position + direction * moveModifier);
+            rbody.MovePosition(rbody.position + direction * baseMoveModifier * moveModifier);
             return true;
         }
         return false;
     }
 
-    bool CanMoveInDirection(Vector3 direction, out Transform obstacleTransform)
+    bool CanMoveInDirection(Vector3 direction)
     {
-        obstacleTransform = GetTransformInDirection(direction);
-
-        if (obstacleTransform != null)
-        {
-            return false;
-        }
-        else
-        {
-            obstacleTransform = null;
-            return true;
-        }
+        Transform obstacle = model.GetTransformInDirection(model.forward * checkForCollisionStartDistance, direction, checkForCollisionDistance, movementCheckLayer);
+        return !obstacle;
     }
 
     void SetUpComponents()
@@ -57,19 +48,5 @@ public class CreatureMovement : MonoBehaviour {
     {
         Quaternion lookRotation = Quaternion.LookRotation(direction);
         model.rotation = Quaternion.Lerp(model.rotation, lookRotation, turnModifier * Time.deltaTime);
-    }
-
-    Transform GetTransformInDirection(Vector3 direction)
-    {
-        RaycastHit[] hits = new RaycastHit[3];
-
-        if(Physics.Raycast(rbody.position + model.forward * checkForCollisionStartDistance, direction, out hits[0], baseMoveModifier + checkForCollisionDistance, movementCheckLayer) ||
-            Physics.Raycast(rbody.position + model.forward * checkForCollisionStartDistance, direction, out hits[1], baseMoveModifier + checkForCollisionDistance, movementCheckLayer) ||
-            Physics.Raycast(rbody.position + model.forward * checkForCollisionStartDistance, direction, out hits[2], baseMoveModifier + checkForCollisionDistance, movementCheckLayer))
-        {
-            return hits[0].transform ?? hits[1].transform ?? hits[2].transform;
-        }
-
-        return null;
     }
 }
