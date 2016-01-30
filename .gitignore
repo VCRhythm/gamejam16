@@ -36,3 +36,8 @@ Temp
 *.csproj
 *.pidb
 *.sln
+
+
+Library/*
+Temp/*
+ProjectSettings/*
