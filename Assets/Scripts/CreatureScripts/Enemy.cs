@@ -42,6 +42,13 @@ public class Enemy : Creature {
 
     void FixedUpdate()
     {
+        if (enemyMovement.towerSlowModifier != 1f)
+        {
+            if (enemyMovement.slowTimer <= Time.time)
+            {
+                enemyMovement.towerSlowModifier = 1f;
+            }
+        }
         if (target != null)
         {
             Vector3 heading = (target.position - transform.position).normalized;

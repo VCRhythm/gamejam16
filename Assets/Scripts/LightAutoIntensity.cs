@@ -45,7 +45,6 @@ public class LightAutoIntensity : MonoBehaviour
 
     void Start()
     {
-        SetTransition(0);
     }
 
     void Update()
@@ -67,7 +66,6 @@ public class LightAutoIntensity : MonoBehaviour
 
     public void TransitionToDay()
     {
-
         TransitionUpdate();
 
         //toggle stars
@@ -86,7 +84,6 @@ public class LightAutoIntensity : MonoBehaviour
 
     public void TransitionToNight()
     {
-
         TransitionUpdate();
 
         //toggle stars
