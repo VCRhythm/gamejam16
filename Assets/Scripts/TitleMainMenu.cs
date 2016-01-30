@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
-
+using UnityEditor;
+using UnityEngine.SceneManagement;
 public class TitleMainMenu : MonoBehaviour {
     public Canvas MainMenu;
     public Canvas OptionMenu;
-    //public AudioSource gameMusic; // TODO: add music
+    public GameObject PersistenceGameObject;
 
     // Use this for initialization
     void Start () {
@@ -22,6 +23,8 @@ public class TitleMainMenu : MonoBehaviour {
 
     public void StartGame() {
         //add code to swtich to scene
+        DontDestroyOnLoad(PersistenceGameObject);
+        SceneManager.LoadScene(1);
     }
 
     public void SwitchToOptionsScreen() {
@@ -56,6 +59,7 @@ public class TitleMainMenu : MonoBehaviour {
         GameObject GraphicsSlider = GameObject.Find("GraphicsSlider");
         Text[] GraphicsSliderTexts = GraphicsSlider.GetComponentsInChildren<Text>();
         GraphicsSlider.GetComponentInChildren<Slider>().value = QualitySettings.GetQualityLevel();//set from quality settings
+        PersistenceGameObject.GetComponent<PeristentObject>().graphicsVal = QualitySettings.GetQualityLevel();
         foreach (Text GraphicsSliderText in GraphicsSliderTexts)
         {
             if (GraphicsSliderText.name == "CurrentSetting")
@@ -64,23 +68,19 @@ public class TitleMainMenu : MonoBehaviour {
             }
         }
     }
-
-    public void AdjustSoundVolume()
-    {
-        float newVal = GameObject.Find("SoundSlider").GetComponentInChildren<Slider>().value;
-        AudioListener.volume = newVal;
-        //Debug.Log(newVal);
-    }
-
-    public void AdjustMusicVolume()
-    {
-        float newVal = GameObject.Find("MusicSlider").GetComponentInChildren<Slider>().value;
-        //gameMusic.volume = newVal;
-        //Debug.Log(newVal);
-    }
-
+    
     public void QuitGame() {
         //exit game
         Application.Quit();
+    }
+
+    public void SetSFXLevel(float sfxLvl)
+    {
+        PersistenceGameObject.GetComponent<PeristentObject>().sfxVal = sfxLvl;
+    }
+
+    public void SetMusicLevel(float musicLvl)
+    {
+        PersistenceGameObject.GetComponent<PeristentObject>().musicVal = musicLvl;
     }
 }

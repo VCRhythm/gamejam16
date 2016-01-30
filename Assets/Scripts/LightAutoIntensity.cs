@@ -32,6 +32,7 @@ public class LightAutoIntensity : MonoBehaviour
     Skybox sky;
     Material skyMat;
     DayNight DayNightScript;
+
     void Start()
     {
         DayNightScript = GetComponent<DayNight>();
@@ -45,17 +46,17 @@ public class LightAutoIntensity : MonoBehaviour
 
     void Update()
     {
-        if (Debug.isDebugBuild)
+#if UNITY_EDITOR
+        //debug code
+        if (Input.GetKeyDown(KeyCode.O))
         {
-            if (Input.GetKeyDown(KeyCode.O))
-            {
-                SetTranstion(0);
-            }
-            if (Input.GetKeyDown(KeyCode.P))
-            {
-                SetTranstion(1);
-            }
+            SetTranstion(0);
         }
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            SetTranstion(1);
+        }
+#endif
         transitionDayState();
 
     }
