@@ -7,9 +7,13 @@ public class Enemy : Creature {
 
     public string primaryTargetTag = "HomeBase";
 
-
     public float lookAheadStartDistance = 1f;
     public float lookAheadDistance = 5f;
+
+    //Tower Effects
+    public float towerSlowModifier = 1f;
+    public float slowTimer;
+
     LayerMask lookLayer = 1 << 8 | 1 << 9 | 1 << 11;
 
     Transform model;
@@ -42,13 +46,14 @@ public class Enemy : Creature {
 
     void FixedUpdate()
     {
-        if (enemyMovement.towerSlowModifier != 1f)
+        if (towerSlowModifier != 1f)
         {
-            if (enemyMovement.slowTimer <= Time.time)
+            if (slowTimer <= Time.time)
             {
-                enemyMovement.towerSlowModifier = 1f;
+                towerSlowModifier = 1f;
             }
         }
+
         if (target != null)
         {
             Vector3 heading = (target.position - transform.position).normalized;
@@ -77,7 +82,7 @@ public class Enemy : Creature {
                 }
             }
 
-            enemyMovement.Move(heading, 1);
+            enemyMovement.Move(heading, towerSlowModifier);
         }
         else
         {

@@ -3,8 +3,6 @@
 public class CreatureMovement : MonoBehaviour {
 
     public float baseMoveModifier = .5f;
-    public float towerSlowModifier = 1f;
-    public float slowTimer;
     public float turnModifier = 10f;
     public float checkForCollisionStartDistance = 1f;
     public float checkForCollisionDistance = 1f;
@@ -28,7 +26,7 @@ public class CreatureMovement : MonoBehaviour {
 
         if (CanMoveInDirection(direction))
         {
-            rbody.MovePosition(rbody.position + direction * baseMoveModifier * moveModifier * towerSlowModifier);
+            rbody.MovePosition(rbody.position + direction * baseMoveModifier * moveModifier);
             return true;
         }
         return false;
