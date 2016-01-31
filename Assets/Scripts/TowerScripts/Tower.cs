@@ -10,6 +10,7 @@ public abstract class Tower : MonoBehaviour, IDamageable {
 
     protected LayerMask enemyLayer = 1 << 8;
     protected GameObject target;
+    protected ParticleSystem particleSystem;
 
     //upgrading
     public int maxLevel;
@@ -29,6 +30,7 @@ public abstract class Tower : MonoBehaviour, IDamageable {
     {
         meshRenderer = GetComponentInChildren<MeshRenderer>();
         originalMaterial = meshRenderer.material;
+        particleSystem = GetComponent<ParticleSystem>();
     }
 
     void Start()
@@ -43,7 +45,10 @@ public abstract class Tower : MonoBehaviour, IDamageable {
 
     virtual protected void Fire()
     {
-
+        if (particleSystem)
+        {
+            particleSystem.Play();
+        }
     }
 
     protected GameObject GetTarget()

@@ -4,6 +4,7 @@ public class BigCheeseRay : Tower {
 
     private float nextFire;
 
+
     // Use this for initialization
     void Start()
     {
@@ -59,6 +60,8 @@ public class BigCheeseRay : Tower {
 
     protected override void Fire()
     {
+        base.Fire();
+
         if (target)
         {
             target.transform.GetCreature().TakeDamage((int)damage);
