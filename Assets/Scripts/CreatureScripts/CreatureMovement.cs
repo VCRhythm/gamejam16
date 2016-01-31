@@ -14,6 +14,7 @@ public class CreatureMovement : MonoBehaviour {
 
     Rigidbody rbody;
     protected Transform model;
+    protected Animator animator;
 
     protected virtual void Awake()
     {
@@ -40,8 +41,9 @@ public class CreatureMovement : MonoBehaviour {
 
     void SetUpComponents()
     {
+        animator = GetComponentInChildren<Animator>();
         rbody = GetComponent<Rigidbody>();
-        model = transform.FindChild("Model");
+        model = transform.GetChild(0);
     }
 
     void SmoothLook(Vector3 direction)

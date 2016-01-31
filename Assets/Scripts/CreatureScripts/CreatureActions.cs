@@ -15,15 +15,19 @@ public class CreatureActions : MonoBehaviour {
 
     Transform model;
     protected float lastAttack;
+    Animator animator;
 
     protected virtual void Awake ()
     {
-        model = transform.FindChild("Model");
+        model = transform.GetChild(0);
+        animator = GetComponentInChildren<Animator>();
     }
 
     public void Attack()
     {
         if (!CanAttack()) return;
+
+        animator.SetTrigger("Attack");
 
         lastAttack = Time.time;
         Collider[] attackedColliders = GetCreatureCollidersInAttackRadius();
@@ -45,7 +49,6 @@ public class CreatureActions : MonoBehaviour {
 
     protected Collider[] GetCreatureCollidersInAttackRadius()
     {
-        Debug.DrawRay(model.position + model.forward * attackDistance, model.forward * attackSphereRadius, Color.red, 1f);
         return Physics.OverlapSphere(model.position + model.forward * attackDistance, attackSphereRadius, attackLayer);
     }
 

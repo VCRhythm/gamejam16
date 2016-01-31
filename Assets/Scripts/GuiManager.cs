@@ -9,7 +9,6 @@ public class GuiManager : MonoBehaviour {
 
     GameObject[] GUIItems;
 
-
     void Start()
     {
         GUIItems = GameObject.FindGameObjectsWithTag("GUIItem");
@@ -64,6 +63,7 @@ public class GuiManager : MonoBehaviour {
     {
         int foodCount = player.cheese;
         int maxcheese = 300;
+        Debug.Log(GUIItem);
         GUIItem.GetComponent<Text>().text = "Cheese: " + foodCount + " / " + maxcheese;
     }
 

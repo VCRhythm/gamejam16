@@ -9,6 +9,7 @@ public class PlayerActions : CreatureActions {
     private float volLowRange = .5f;
     private float volHighRange = 1f;
     private AudioSource source;
+
     protected override void Awake()
     {
         base.Awake();

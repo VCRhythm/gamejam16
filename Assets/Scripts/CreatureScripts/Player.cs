@@ -5,6 +5,15 @@
 [RequireComponent(typeof(PlayerInput))]
 public class Player : Creature {
 
+    public override Color color
+    {
+        get { return colors[colorIndex]; }
+        set
+        {
+            //meshRenderer.material.color = value;
+        }
+    }
+
     public int cheese = 0;
     public float colorCycleCooldown = 1f;
 

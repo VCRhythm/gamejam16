@@ -33,7 +33,7 @@ public class Enemy : Creature {
     {
         base.Awake();
 
-        model = transform.FindChild("Model");
+        model = transform.GetChild(0);
         color = AssignColor();
         enemyActions = GetComponent<EnemyActions>();
         enemyMovement = GetComponent<EnemyMovement>();

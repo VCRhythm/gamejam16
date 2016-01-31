@@ -19,9 +19,14 @@ public class PlayerMovement : CreatureMovement {
 
         if (movement != Vector3.zero)
         {
+            animator.SetBool("IsMoving", true);
             Move(movement, input.isRunning ? runModifier : 1);
         }
-	}
+        else
+        {
+            animator.SetBool("IsMoving", false);
+        }
+    }
 
     protected override bool CanMoveInDirection(Vector3 direction)
     {

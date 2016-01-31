@@ -6,19 +6,23 @@ public class Creature : MonoBehaviour, IDamageable {
     public int health { get; private set; }
     public Color damagedColor;
 
-    public Color color { get { return colors[colorIndex]; } set { meshRenderer.material.color = value; } }
+    public virtual Color color { get { return colors[colorIndex]; } set {
+            meshRenderer.material.color = value;
+        } }
 
-    protected MeshRenderer meshRenderer;
+    protected SkinnedMeshRenderer meshRenderer;
     protected int colorIndex;
     protected bool isShowingDamage = false;
     protected Color[] colors = new Color[3] { Color.blue, Color.red, Color.yellow };
 
     new private ParticleSystem particleSystem;
+    protected Animator animator;
 
     protected virtual void Awake()
     {
+        animator = GetComponentInChildren<Animator>();
         particleSystem = GetComponentInChildren<ParticleSystem>();
-        meshRenderer = GetComponentInChildren<MeshRenderer>();
+        meshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
     }
 
     protected virtual void Start()
@@ -47,11 +51,13 @@ public class Creature : MonoBehaviour, IDamageable {
         if (isShowingDamage) return;
 
         isShowingDamage = true;
-        meshRenderer.material.color = damagedColor;
+        
         if (particleSystem)
         {
             particleSystem.Play();
         }
+
+        animator.SetTrigger("Damaged");
 
         Invoke("HideDamage", 1f);
     }
@@ -64,6 +70,7 @@ public class Creature : MonoBehaviour, IDamageable {
 
     protected virtual void Die()
     {
+        animator.SetTrigger("Die");
         Destroy(gameObject);
     }
 
