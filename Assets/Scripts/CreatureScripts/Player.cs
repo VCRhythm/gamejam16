@@ -10,6 +10,12 @@ public class Player : Creature {
 
     float lastColorCycle;
 
+    protected override void Awake()
+    {
+        base.Awake();
+        color = colors[colorIndex];
+    }
+
     void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Food"))

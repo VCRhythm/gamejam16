@@ -19,8 +19,7 @@ public class PlayerMovement : CreatureMovement {
 
         if (movement != Vector3.zero)
         {
-            Transform obstacleTransform;
-            Move(movement, baseMoveModifier * (input.isRunning ? runModifier : 1), out obstacleTransform);
+            Move(movement, input.isRunning ? runModifier : 1);
         }
 	}
 

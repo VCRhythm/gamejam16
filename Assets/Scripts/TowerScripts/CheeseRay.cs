@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GunTower : Tower {
+public class CheeseRay : Tower {
 
     private float nextFire;
 
@@ -9,8 +9,9 @@ public class GunTower : Tower {
 	void Start ()
     {
         //generic stats to be changed
-        health = 10;
-        damage = 1;
+        health = 100;
+        damage = 10;
+        cost = 40;
         range = 5;
         fireRate = 1f;
         upgradeDamage = 3;
@@ -49,27 +50,6 @@ public class GunTower : Tower {
         }
 	}
 
-    override protected GameObject GetTarget()
-    {
-        GameObject closestTarget;
-        Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, range, enemyLayer);
-        if (enemiesInRange.Length > 0)
-        {
-            //get closest enemy
-            closestTarget = enemiesInRange[0].gameObject;
-            for (int i = 0; i < enemiesInRange.Length; i++)
-            {
-                GameObject nextTarget = enemiesInRange[i].gameObject;
-                if ((nextTarget.transform.position - transform.position).magnitude < (closestTarget.transform.position - transform.position).magnitude)
-                {
-                    closestTarget = nextTarget;
-                }
-            }
-            return closestTarget;
-        }
-        return null;
-    }
-
     //add to stats if upgraded
     override public void Upgrade()
     {
@@ -82,7 +62,7 @@ public class GunTower : Tower {
     {
         if (target)
         {
-            target.GetComponent<Creature>().TakeDamage(damage);
+            target.GetComponent<Creature>().TakeDamage((int)damage);
         }
     }
 }

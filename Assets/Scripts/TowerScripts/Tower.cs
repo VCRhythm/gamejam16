@@ -3,10 +3,11 @@ using System;
 
 public abstract class Tower : MonoBehaviour, IDamageable {
 
-    public int damage;
+    public float damage;
     public int health;
     public int range;
     public float fireRate;
+    public int cost;
 
     protected LayerMask enemyLayer = 1 << 8;
     protected GameObject target;
@@ -16,7 +17,7 @@ public abstract class Tower : MonoBehaviour, IDamageable {
     public int level = 1;
 
     //amount to increase stats each upgrade
-    protected int upgradeDamage;
+    protected float upgradeDamage;
     protected int upgradeHealth;
 
     //Damage display
@@ -46,13 +47,37 @@ public abstract class Tower : MonoBehaviour, IDamageable {
 
     }
 
-    protected abstract GameObject GetTarget();
+    protected GameObject GetTarget()
+    {
+        GameObject closestTarget;
+        Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, range, enemyLayer);
+        if (enemiesInRange.Length > 0)
+        {
+            //get closest enemy
+            closestTarget = enemiesInRange[0].gameObject;
+            for (int i = 0; i < enemiesInRange.Length; i++)
+            {
+                GameObject nextTarget = enemiesInRange[i].gameObject;
+                if ((nextTarget.transform.position - transform.position).magnitude < (closestTarget.transform.position - transform.position).magnitude)
+                {
+                    closestTarget = nextTarget;
+                }
+            }
+            return closestTarget;
+        }
+        return null;
+    }
+
 
     #region IDamageable Interface
 
     public void TakeDamage(int damage)
     {
         health -= damage;
+        if (health <= 0)
+        {
+            Die();
+        }
         ShowDamage();
     }
     
@@ -74,4 +99,8 @@ public abstract class Tower : MonoBehaviour, IDamageable {
         isShowingDamage = false;
     }
 
+    void Die()
+    {
+        Destroy(gameObject);
+    }
 }
