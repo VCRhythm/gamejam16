@@ -13,8 +13,11 @@ public class Creature : MonoBehaviour, IDamageable {
     protected bool isShowingDamage = false;
     protected Color[] colors = new Color[3] { Color.blue, Color.red, Color.yellow };
 
+    new private ParticleSystem particleSystem;
+
     protected virtual void Awake()
     {
+        particleSystem = GetComponentInChildren<ParticleSystem>();
         meshRenderer = GetComponentInChildren<MeshRenderer>();
     }
 
@@ -30,6 +33,7 @@ public class Creature : MonoBehaviour, IDamageable {
 
         if (health <= 0)
         {
+            health = 0;
             Die();
         }
         else
@@ -44,6 +48,10 @@ public class Creature : MonoBehaviour, IDamageable {
 
         isShowingDamage = true;
         meshRenderer.material.color = damagedColor;
+        if (particleSystem)
+        {
+            particleSystem.Play();
+        }
 
         Invoke("HideDamage", 1f);
     }

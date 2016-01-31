@@ -37,7 +37,6 @@ public class CreatureActions : MonoBehaviour {
     {
         for (int i = attackedColliders.Length - 1; i >= 0; i--)
         {
-            Debug.Log(attackedColliders[i]);
             attackedColliders[i].GetIDamageable().TakeDamage(attackDamage);
         }
     }

@@ -44,6 +44,8 @@ public class CheeseRay : Tower {
 
     protected override void Fire()
     {
+        base.Fire();
+
         if (target)
         {
             target.transform.GetCreature().TakeDamage((int)damage);

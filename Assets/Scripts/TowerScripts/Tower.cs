@@ -80,9 +80,13 @@ public abstract class Tower : MonoBehaviour, IDamageable {
         health -= damage;
         if (health <= 0)
         {
+            health = 0;
             Die();
         }
-        ShowDamage();
+        else
+        {
+            ShowDamage();
+        }
     }
     
     #endregion
