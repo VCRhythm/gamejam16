@@ -39,8 +39,10 @@ public class Enemy : Creature {
         enemyMovement = GetComponent<EnemyMovement>();
     }
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
+
         itemSpawner = FindObjectOfType<ItemSpawner>();
     }
 

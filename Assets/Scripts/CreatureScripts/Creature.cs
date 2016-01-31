@@ -18,7 +18,7 @@ public class Creature : MonoBehaviour, IDamageable {
         meshRenderer = GetComponentInChildren<MeshRenderer>();
     }
 
-    void Start()
+    protected virtual void Start()
     {
         health = maxHealth;
         transform.Register();

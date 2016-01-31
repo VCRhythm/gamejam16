@@ -23,8 +23,10 @@ public class Player : Creature {
         model = transform.GetChild(0);
     }
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
+
         towerConstruction = FindObjectOfType<TowerConstruction>();
     }
 

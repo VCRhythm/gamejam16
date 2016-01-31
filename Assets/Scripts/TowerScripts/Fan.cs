@@ -1,21 +1,19 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Fan : Tower {
 
     private float nextFire;
-
+    public float slowRate = 1f;
     // Use this for initialization
     void Start()
     {
         //generic stats to be changed
-        health = 250;
-        damage = 2;
-        cost = 60;
-        range = 3;
-        fireRate = .25f;
-        upgradeDamage = 3;
+        health = 10;
+        damage = .5f;
+        range = 15;
+        fireRate = 1.25f;
         upgradeHealth = 10;
+        upgradeDamage = .1f;
         maxLevel = 5;
         target = null;
         nextFire = 0;
@@ -43,26 +41,34 @@ public class Fan : Tower {
                 //fire at target
                 if (nextFire < Time.time)
                 {
-                    Fire();
-                    nextFire = Time.time + fireRate;
+                    if (target.transform.GetEnemy().towerSlowModifier == 1f)
+                    {
+                        Fire();
+                        nextFire = Time.time + fireRate;
+                    }
                 }
             }
         }
     }
 
-    //add to stats if upgraded
     override public void Upgrade()
     {
-        level++;
-        health += upgradeHealth;
-        damage += upgradeDamage;
+        //increase slow time
+        if (level < maxLevel)
+        {
+            level++;
+            damage -= upgradeDamage;
+            health += upgradeHealth;
+        }
     }
 
     protected override void Fire()
     {
         if (target)
         {
-            target.transform.GetCreature().TakeDamage((int)damage);
+            Enemy enemy = target.transform.GetEnemy();
+            enemy.towerSlowModifier = .25f;
+            enemy.slowTimer = Time.time + slowRate;
         }
     }
 }

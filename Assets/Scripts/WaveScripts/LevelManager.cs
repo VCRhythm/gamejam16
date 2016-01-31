@@ -1,57 +1,53 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
+using System.IO;
 
 public class LevelManager : MonoBehaviour {
 
     public float lengthOfDay = 120;
-    public Level[] levels;
+    public float numberOfNights = 2;
+    public int amountOfCheeseToSpawn = 100;
 
-    int levelIndex = 0;
-    Level level;
+    int night = 1;
     EnemySpawner enemySpawner;
-    ItemSpawner foodSpawner;
+    ItemSpawner itemSpawner;
     DayNight dayNight;
 
     void Awake()
     {
         dayNight = FindObjectOfType<DayNight>();
         enemySpawner = GetComponent<EnemySpawner>();
-        foodSpawner = GetComponent<ItemSpawner>();
+        itemSpawner = GetComponent<ItemSpawner>();
     }
 
-    void StartDay()
+    void Start()
+    {
+        StartDay();
+    }
+
+    public void StartDay()
     {
         dayNight.StartDay();
 
-        level = levels[levelIndex++];
         Invoke("SpawnFood", 3f);
-
         Invoke("StartNight", lengthOfDay);
     }
 
     void SpawnFood()
     {
-        foodSpawner.SpawnInRandomLocation(level.amountOfDayFood);
+        itemSpawner.SpawnInRandomLocation(amountOfCheeseToSpawn);
     }
 
     void StartNight()
     {
         dayNight.StartNight();
-
+       
         Invoke("StartWave", 3f);
-        Invoke("StartWave", level.timeBetweenNightWaves);
     }
 
     void StartWave()
     {
-        Wave wave = level.GetWave();
-
-        if (wave != null)
-        {
-            //enemySpawner.SpawnEnemies(wave.enemyTypes, wave.enemyCount);
-        }
-        else
-        {
-            StartDay();
-        }
+        enemySpawner.SpawnEnemies(night);
     }
+
 }
