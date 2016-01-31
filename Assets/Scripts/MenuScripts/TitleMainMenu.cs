@@ -1,33 +1,27 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEditor;
 using UnityEngine.SceneManagement;
 
 public class TitleMainMenu : MonoBehaviour {
     public Canvas MainMenu;
     public Canvas OptionMenu;
-    public GameObject PersistenceGamePrefab;
-    public GameObject PersistenceGameObject;
+    public PeristentObject persistenceGameObject;
 
-    void Start () {
-        if (GameObject.FindGameObjectsWithTag("PersistentObject").Length < 1) {
-            PersistenceGameObject = Instantiate(PersistenceGamePrefab, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
-        }
-        //Debug.Log(PersistenceGameObject);
-        PersistenceGameObject.GetComponent<PeristentObject>().DebugProps();
+    void Start ()
+    {        
         SetValuesFromGameSaveSettings();
         MainMenu = MainMenu.GetComponent<Canvas>();
         OptionMenu = OptionMenu.GetComponent<Canvas>();
         OptionMenu.gameObject.SetActive(false);
     }
 	
-    public void StartGame() {
-        DontDestroyOnLoad(PersistenceGameObject);
-        SceneManager.LoadSceneAsync(1);
-
+    public void StartGame()
+    {
+        SceneManager.LoadScene(1);
     }
 
-    public void SwitchToOptionsScreen() {
+    public void SwitchToOptionsScreen()
+    {
         MainMenu.gameObject.SetActive(false);
         OptionMenu.gameObject.SetActive(true);
     }
@@ -59,7 +53,7 @@ public class TitleMainMenu : MonoBehaviour {
         GameObject GraphicsSlider = GameObject.Find("GraphicsSlider");
         Text[] GraphicsSliderTexts = GraphicsSlider.GetComponentsInChildren<Text>();
         GraphicsSlider.GetComponentInChildren<Slider>().value = QualitySettings.GetQualityLevel();//set from quality settings
-        PersistenceGameObject.GetComponent<PeristentObject>().graphicsVal = QualitySettings.GetQualityLevel();
+        persistenceGameObject.graphicsVal = QualitySettings.GetQualityLevel();
         foreach (Text GraphicsSliderText in GraphicsSliderTexts)
         {
             if (GraphicsSliderText.name == "CurrentSetting")
@@ -68,15 +62,15 @@ public class TitleMainMenu : MonoBehaviour {
             }
         }
 
-        SetMusicLevel(PersistenceGameObject.GetComponent<PeristentObject>().musicVal);
-        GetComponent<AudioManager>().SetMusicLevel(PersistenceGameObject.GetComponent<PeristentObject>().musicVal);
+        SetMusicLevel(persistenceGameObject.musicVal);
+        GetComponent<AudioManager>().SetMusicLevel(persistenceGameObject.musicVal);
         GameObject MusicSlider = GameObject.Find("MusicSlider");
-        MusicSlider.GetComponentInChildren<Slider>().value = PersistenceGameObject.GetComponent<PeristentObject>().musicVal;
+        MusicSlider.GetComponentInChildren<Slider>().value = persistenceGameObject.musicVal;
 
-        SetSFXLevel(PersistenceGameObject.GetComponent<PeristentObject>().sfxVal);
-        GetComponent<AudioManager>().SetSFXLevel(PersistenceGameObject.GetComponent<PeristentObject>().sfxVal);
+        SetSFXLevel(persistenceGameObject.sfxVal);
+        GetComponent<AudioManager>().SetSFXLevel(persistenceGameObject.sfxVal);
         GameObject SoundSlider = GameObject.Find("SoundSlider");
-        SoundSlider.GetComponentInChildren<Slider>().value = PersistenceGameObject.GetComponent<PeristentObject>().sfxVal;
+        SoundSlider.GetComponentInChildren<Slider>().value = persistenceGameObject.sfxVal;
     }
     
     public void QuitGame() {
@@ -86,13 +80,13 @@ public class TitleMainMenu : MonoBehaviour {
 
     public void SetSFXLevel(float sfxLvl)
     {
-        PersistenceGameObject.GetComponent<PeristentObject>().sfxVal = sfxLvl;
-        PersistenceGameObject.GetComponent<PeristentObject>().DebugProps();
+        persistenceGameObject.sfxVal = sfxLvl;
+        //persistenceGameObject.DebugProps();
     }
 
     public void SetMusicLevel(float musicLvl)
     {
-        PersistenceGameObject.GetComponent<PeristentObject>().musicVal = musicLvl;
-        PersistenceGameObject.GetComponent<PeristentObject>().DebugProps();
+        persistenceGameObject.musicVal = musicLvl;
+        //persistenceGameObject.DebugProps();
     }
 }

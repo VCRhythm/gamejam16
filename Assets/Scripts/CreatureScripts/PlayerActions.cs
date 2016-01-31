@@ -9,6 +9,7 @@ public class PlayerActions : CreatureActions {
     private float volLowRange = .5f;
     private float volHighRange = 1f;
     private AudioSource source;
+
     protected override void Awake()
     {
         base.Awake();
@@ -21,6 +22,8 @@ public class PlayerActions : CreatureActions {
 
     void FixedUpdate()
     {
+        if (isActing) return;
+
         if(input.isAttacking)
         {
             float vol = Random.Range(volLowRange, volHighRange);

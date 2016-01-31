@@ -24,6 +24,7 @@ public class Enemy : Creature {
     EnemyActions enemyActions;
     Transform target;
 
+    LevelManager levelManager;
     ItemSpawner itemSpawner;
 
     List<string> avoidTags = new List<string> { "Obstacle", "Enemy" };
@@ -33,10 +34,11 @@ public class Enemy : Creature {
     {
         base.Awake();
 
-        model = transform.FindChild("Model");
+        model = transform.GetChild(0);
         color = AssignColor();
         enemyActions = GetComponent<EnemyActions>();
         enemyMovement = GetComponent<EnemyMovement>();
+        levelManager = FindObjectOfType<LevelManager>();
     }
 
     protected override void Start()
@@ -65,6 +67,8 @@ public class Enemy : Creature {
                 towerSlowModifier = 1f;
             }
         }
+
+        if (enemyActions.isActing) return;
 
         if (target != null)
         {
@@ -143,6 +147,8 @@ public class Enemy : Creature {
         {
             itemSpawner.Spawn(ItemSpawner.ItemType.Health, transform.position);
         }
+
+        levelManager.ReportEnemyDeath();
 
         base.Die();
     }

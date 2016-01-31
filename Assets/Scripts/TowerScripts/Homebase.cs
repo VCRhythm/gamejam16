@@ -4,9 +4,14 @@ public class Homebase : Tower
 {
     public int heal = 2;
     public float healRate = 5f;
-    public int maxHealth;
+    public int maxHealth { get; private set; }
 
     float nextHealTime = 0;
+
+    protected override void Awake()
+    {
+        maxHealth = health;
+    }
 
     void Update()
     {

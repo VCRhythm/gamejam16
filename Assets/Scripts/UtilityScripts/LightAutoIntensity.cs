@@ -49,11 +49,11 @@ public class LightAutoIntensity : MonoBehaviour
     {
 #if UNITY_EDITOR
         //debug code
-        if (Input.GetKeyDown(KeyCode.O))
+        if (Input.GetKeyDown(KeyCode.N))
         {
             SetTransition(0);
         }
-        if (Input.GetKeyDown(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.M))
         {
             SetTransition(1);
         }

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class CreatureActions : MonoBehaviour {
 
@@ -8,6 +9,8 @@ public class CreatureActions : MonoBehaviour {
     public int attackDamage = 1;
     public float attackCooldown = 1f;
 
+    public bool isActing { get; private set; }
+
     protected const int enemyLayer = 1 << 8;
     protected const int structureLayer = 1 << 9;
     protected const int playerLayer = 1 << 11;
@@ -15,22 +18,37 @@ public class CreatureActions : MonoBehaviour {
 
     Transform model;
     protected float lastAttack;
+    Animator animator;
+    
+    Creature creature;
 
     protected virtual void Awake ()
     {
-        model = transform.FindChild("Model");
+        isActing = false;
+        creature = GetComponent<Creature>();
+        model = transform.GetChild(0);
+        animator = GetComponentInChildren<Animator>();
     }
 
     public void Attack()
     {
         if (!CanAttack()) return;
 
-        lastAttack = Time.time;
+        isActing = true;
+        animator.SetTrigger("Attack");
+
+        StartCoroutine(AttackCoroutine());        
+    }
+
+    IEnumerator AttackCoroutine()
+    {
+        yield return new WaitForSeconds(.5f);
         Collider[] attackedColliders = GetCreatureCollidersInAttackRadius();
-        if(attackedColliders.Length > 0)
+        if (attackedColliders.Length > 0)
         {
             Damage(attackedColliders);
         }
+        isActing = false;
     }
 
     void Damage(Collider[] attackedColliders)
@@ -45,7 +63,6 @@ public class CreatureActions : MonoBehaviour {
 
     protected Collider[] GetCreatureCollidersInAttackRadius()
     {
-        Debug.DrawRay(model.position + model.forward * attackDistance, model.forward * attackSphereRadius, Color.red, 1f);
         return Physics.OverlapSphere(model.position + model.forward * attackDistance, attackSphereRadius, attackLayer);
     }
 

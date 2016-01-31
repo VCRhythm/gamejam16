@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public class EnemyActions : CreatureActions
+﻿public class EnemyActions : CreatureActions
 {
     protected override void Awake()
     {

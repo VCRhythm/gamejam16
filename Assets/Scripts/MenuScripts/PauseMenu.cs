@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 public class PauseMenu : MonoBehaviour {
@@ -12,7 +11,6 @@ public class PauseMenu : MonoBehaviour {
     public GameObject PersistenceGamePrefab;
     GameObject PersistentGameObject;
     //public AudioSource gameMusic; // TODO: add music
-    bool pauseState = false;
     // Use this for initialization
     void Start()
     {
@@ -60,11 +58,14 @@ public class PauseMenu : MonoBehaviour {
             GetComponent<CanvasGroup>().alpha = 0;
         }
         GameObject.FindGameObjectWithTag("GUI").GetComponent<CanvasGroup>().alpha = (newPauseState == false ? 1 : 0);
-        pauseState = newPauseState;
     }
 
-	// Update is called once per frame
 	void Update () {
+        if (Input.GetButtonDown("Pause Menu"))
+        {
+            float curAlpha = GetComponent<CanvasGroup>().alpha;
+            Toggle((curAlpha == 1 ? false : true));
+        }
 
     }
 

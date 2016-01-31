@@ -5,6 +5,15 @@
 [RequireComponent(typeof(PlayerInput))]
 public class Player : Creature {
 
+    public override Color color
+    {
+        get { return colors[colorIndex]; }
+        set
+        {
+            //meshRenderer.material.color = value;
+        }
+    }
+
     public int cheese = 0;
     public float colorCycleCooldown = 1f;
 
@@ -37,18 +46,20 @@ public class Player : Creature {
         {
             towerConstruction.ToggleBuildMenu();
         }
-        if (input.isTogglingPauseMenu)
-        {
-            float curAlpha = GameObject.FindGameObjectWithTag("PauseMenu").GetComponent<CanvasGroup>().alpha;
-            GameObject.FindGameObjectWithTag("PauseMenu").GetComponent<PauseMenu>().Toggle((curAlpha == 1 ? false : true));
-        }
     }
 
     void OnCollisionEnter(Collision other)
     {
         if(other.transform.CompareTag("Food"))
         {
+            Debug.Log(other.transform);
             IncreaseFood(other.transform.GetFood().amount);
+            Destroy(other.gameObject);
+        }
+        else if(other.transform.CompareTag("Health"))
+        {
+            Debug.Log(other.transform);
+            IncreaseHealth(other.transform.GetFood().amount);
             Destroy(other.gameObject);
         }
     }
@@ -57,6 +68,12 @@ public class Player : Creature {
     {
         cheese += amount;
         cheese = Mathf.Clamp(cheese, 0, maxFoodCount);
+    }
+
+    void IncreaseHealth(int amount)
+    {
+        health += amount;
+        health = Mathf.Clamp(health, 0, maxHealth);
     }
 
     public void GetTower(Tower tower)
