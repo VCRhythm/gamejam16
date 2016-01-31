@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour {
 
-    public AudioMixerSnapshot TitleMenuMusic;
+    //public AudioMixerSnapshot TitleMenuMusic;
     /*public AudioMixerSnapshot inCombat;
     public AudioClip[] stings;
     public AudioSource stingSource;
@@ -33,8 +33,16 @@ public class AudioManager : MonoBehaviour {
             masterMixer.FindSnapshot("TitleMenu").TransitionTo(0.1f);
         }
         else {
-            masterMixer.FindSnapshot("DayMusic").TransitionTo(1f); 
+            playDayMusic();
         }
+    }
+    public void playDayMusic()
+    {
+        masterMixer.FindSnapshot("DayMusic").TransitionTo(2f);
+    }
+    public void playNightMusic()
+    {
+        masterMixer.FindSnapshot("NightMusic").TransitionTo(2f);
     }
 
     public void SetSFXLevel(float sfxLvl)

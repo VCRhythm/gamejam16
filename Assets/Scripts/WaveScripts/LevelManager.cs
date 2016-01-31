@@ -12,12 +12,14 @@ public class LevelManager : MonoBehaviour {
     EnemySpawner enemySpawner;
     ItemSpawner itemSpawner;
     DayNight dayNight;
+    AudioManager audioManager;
 
     void Awake()
     {
         dayNight = FindObjectOfType<DayNight>();
         enemySpawner = GetComponent<EnemySpawner>();
         itemSpawner = GetComponent<ItemSpawner>();
+        audioManager = GetComponent<AudioManager>();
     }
 
     void Start()
@@ -28,7 +30,7 @@ public class LevelManager : MonoBehaviour {
     public void StartDay()
     {
         dayNight.StartDay();
-
+        audioManager.playDayMusic();
         Invoke("SpawnFood", 3f);
         Invoke("StartNight", lengthOfDay);
     }
@@ -41,7 +43,7 @@ public class LevelManager : MonoBehaviour {
     void StartNight()
     {
         dayNight.StartNight();
-       
+        audioManager.playNightMusic();
         Invoke("StartWave", 3f);
     }
 
