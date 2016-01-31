@@ -13,7 +13,7 @@ public class Player : Creature {
     TowerConstruction towerConstruction;
     PlayerInput input;
     Transform model;
-
+    GameOverMenu gameOverMenu;
     protected override void Awake()
     {
         base.Awake();
@@ -21,6 +21,7 @@ public class Player : Creature {
         input = GetComponent<PlayerInput>();
         color = colors[colorIndex];
         model = transform.GetChild(0);
+        gameOverMenu = GameObject.Find("GameOver").GetComponent<GameOverMenu>();
     }
 
     protected override void Start()
@@ -87,6 +88,7 @@ public class Player : Creature {
 
     protected override void Die()
     {
+        gameOverMenu.Trigger();
         enabled = false;
     }
 
