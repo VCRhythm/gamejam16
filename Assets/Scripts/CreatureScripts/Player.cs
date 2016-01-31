@@ -55,12 +55,24 @@ public class Player : Creature {
             IncreaseFood(other.transform.GetFood().amount);
             Destroy(other.gameObject);
         }
+        else if(other.transform.CompareTag("Health"))
+        {
+            Debug.Log(other.transform);
+            IncreaseHealth(other.transform.GetFood().amount);
+            Destroy(other.gameObject);
+        }
     }
 
     void IncreaseFood(int amount)
     {
         cheese += amount;
         cheese = Mathf.Clamp(cheese, 0, maxFoodCount);
+    }
+
+    void IncreaseHealth(int amount)
+    {
+        health += amount;
+        health = Mathf.Clamp(health, 0, maxHealth);
     }
 
     public void GetTower(Tower tower)

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -20,10 +21,11 @@ public class EnemySpawner : MonoBehaviour
         spawnCount = new List<int>();
     }
 
-    public void SpawnEnemies(int night)
+    public int SpawnEnemies(int night)
     {
         ReadEnemyFile(night);
         StartCoroutine(StartSpawning());
+        return spawnCount.Sum();
     }
 
     IEnumerator StartSpawning()

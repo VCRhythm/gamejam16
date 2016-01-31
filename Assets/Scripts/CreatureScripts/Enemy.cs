@@ -24,6 +24,7 @@ public class Enemy : Creature {
     EnemyActions enemyActions;
     Transform target;
 
+    LevelManager levelManager;
     ItemSpawner itemSpawner;
 
     List<string> avoidTags = new List<string> { "Obstacle", "Enemy" };
@@ -37,6 +38,7 @@ public class Enemy : Creature {
         color = AssignColor();
         enemyActions = GetComponent<EnemyActions>();
         enemyMovement = GetComponent<EnemyMovement>();
+        levelManager = FindObjectOfType<LevelManager>();
     }
 
     protected override void Start()
@@ -145,6 +147,8 @@ public class Enemy : Creature {
         {
             itemSpawner.Spawn(ItemSpawner.ItemType.Health, transform.position);
         }
+
+        levelManager.ReportEnemyDeath();
 
         base.Die();
     }

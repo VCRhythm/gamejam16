@@ -3,7 +3,7 @@
 public class Creature : MonoBehaviour, IDamageable {
 
     public int maxHealth;
-    public int health { get; private set; }
+    public int health { get; protected set; }
     public Color damagedColor;
 
     public virtual Color color { get { return colors[colorIndex]; } set {
@@ -58,13 +58,10 @@ public class Creature : MonoBehaviour, IDamageable {
         }
 
         animator.SetTrigger("Damaged");
-
-        Invoke("HideDamage", 1f);
     }
 
     void HideDamage()
     {
-        meshRenderer.material.color = colors[colorIndex];
         isShowingDamage = false;
     }
 

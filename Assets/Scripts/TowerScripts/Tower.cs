@@ -26,7 +26,7 @@ public abstract class Tower : MonoBehaviour, IDamageable {
     MeshRenderer meshRenderer;
     bool isShowingDamage = false;
 
-    void Awake()
+    protected virtual void Awake()
     {
         meshRenderer = GetComponentInChildren<MeshRenderer>();
         originalMaterial = meshRenderer.material;
