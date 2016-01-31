@@ -13,7 +13,7 @@ public class EnemySpawner : MonoBehaviour
     List<Enemy> enemiesToSpawn;
     List<int> spawnCount;
 
-    int night = 0;
+    int night = 1;
 
     string line = " ";
    

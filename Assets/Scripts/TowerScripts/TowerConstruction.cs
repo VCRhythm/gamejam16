@@ -17,7 +17,6 @@ public class TowerConstruction : MonoBehaviour {
 
     public void BuyTower(int index)
     {
-        Debug.Log(index);
         if(player.cheese >= towers[index].cost)
         {
             player.GetTower(towers[index]);
@@ -38,16 +37,15 @@ public class TowerConstruction : MonoBehaviour {
 
     void MakeButtons()
     {
-        RectTransform canvasPanel = towerCanvas.transform.GetChild(0).GetComponent<RectTransform>();
+        RectTransform canvasPanel = towerCanvas.GetComponent<RectTransform>();
         for(int i=0; i < towers.Length; i++)
         {
             Button button = Instantiate(buttonPrefab) as Button;
             Text[] texts = button.GetComponentsInChildren<Text>();
-            texts[0].text = towers[i].name;
+            texts[0].text = towers[i].name.ToUpper();
             texts[1].text = towers[i].cost.ToString();
             int index = i;
             button.onClick.AddListener(() => { BuyTower(index); });
-            Debug.Log(i);
 
             button.transform.SetParent(canvasPanel);
         }
