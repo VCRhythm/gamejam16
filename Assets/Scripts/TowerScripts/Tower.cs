@@ -30,7 +30,7 @@ public abstract class Tower : MonoBehaviour, IDamageable {
     {
         meshRenderer = GetComponentInChildren<MeshRenderer>();
         originalMaterial = meshRenderer.material;
-        particleSystem = GetComponent<ParticleSystem>();
+        particleSystem = GetComponentInChildren<ParticleSystem>();
     }
 
     void Start()

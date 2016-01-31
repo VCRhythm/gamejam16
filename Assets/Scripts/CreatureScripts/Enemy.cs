@@ -78,7 +78,6 @@ public class Enemy : Creature {
                     target = enemyMovement.CreateAvoidanceTarget(heading);
                 }
 
-
                 if (ShouldAttack(obstacleTransform))
                 {
                     enemyActions.Attack();
