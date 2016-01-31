@@ -5,17 +5,12 @@ using System.IO;
 
 public class EnemySpawner : MonoBehaviour
 {
-    // public int spawnCount = 1;
     public float timeBetweenSpawns = 1f;
     public Enemy[] enemyTypes;
     SpawnPoint[] spawnPoints;
 
     List<Enemy> enemiesToSpawn;
     List<int> spawnCount;
-
-    int night = 1;
-
-    string line = " ";
    
     void Awake()
     {
@@ -24,37 +19,10 @@ public class EnemySpawner : MonoBehaviour
         spawnCount = new List<int>();
     }
 
-    public void SpawnEnemies()
+    public void SpawnEnemies(int night)
     {
+        ReadEnemyFile(night);
         StartCoroutine(StartSpawning());
-    }
-
-    void OnEnable()
-    {
-        //read wave from file
-        FileInfo file = new FileInfo(Application.dataPath + "\\Night" + night + ".txt");
-        StreamReader reader = file.OpenText();
-
-        line = reader.ReadLine();
-        while (line != null)
-        {
-            if (line == "E")
-            {
-                enemiesToSpawn.Add(enemyTypes[0]);
-            }
-            else
-            {
-                spawnCount.Add(int.Parse(line));
-            }
-            line = reader.ReadLine();
-        }
-        SpawnEnemies();
-        reader.Close();
-    }
-
-    void OnDisable()
-    {
-        night++;
     }
 
     IEnumerator StartSpawning()
@@ -67,6 +35,28 @@ public class EnemySpawner : MonoBehaviour
                 yield return new WaitForSeconds(timeBetweenSpawns);
             }
         }
+    }
+
+    void ReadEnemyFile(int night)
+    {
+        //read wave from file
+        FileInfo file = new FileInfo(Application.dataPath + "\\Night" + night + ".txt");
+        StreamReader reader = file.OpenText();
+
+        string line = reader.ReadLine();
+        while (line != null)
+        {
+            if (line == "E")
+            {
+                enemiesToSpawn.Add(enemyTypes[0]);
+            }
+            else
+            {
+                spawnCount.Add(int.Parse(line));
+            }
+            line = reader.ReadLine();
+        }
+        reader.Close();
     }
 
     void SpawnEnemy(Enemy toSpawn)
