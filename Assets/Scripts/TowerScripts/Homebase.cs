@@ -28,4 +28,9 @@ public class Homebase : Tower
         nextHealTime = Time.time + healRate;
     }
 
+    protected override void Die()
+    {
+        enabled = false;
+    }
+
 }
