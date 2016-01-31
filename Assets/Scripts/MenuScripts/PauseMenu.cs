@@ -12,7 +12,7 @@ public class PauseMenu : MonoBehaviour {
     public GameObject PersistenceGamePrefab;
     GameObject PersistentGameObject;
     //public AudioSource gameMusic; // TODO: add music
-
+    bool pauseState = false;
     // Use this for initialization
     void Start()
     {
@@ -20,7 +20,9 @@ public class PauseMenu : MonoBehaviour {
         {
             PersistentGameObject = Instantiate(PersistenceGamePrefab, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
         }
-        Time.timeScale = 0;//pause game
+        else {
+            PersistentGameObject = GameObject.FindGameObjectWithTag("PersistentObject");
+        }
         PauseMenuView = PauseMenuView.GetComponent<Canvas>();
         OptionMenuView = OptionMenuView.GetComponent<Canvas>();
         QuitConfirmView = QuitConfirmView.GetComponent<Canvas>();
@@ -47,6 +49,20 @@ public class PauseMenu : MonoBehaviour {
         }
     }
 
+    public void Toggle(bool newPauseState) {
+        if (newPauseState)
+        {
+            Time.timeScale = 0;//pause game
+            GetComponent<CanvasGroup>().alpha = 1;
+        }
+        else {
+            Time.timeScale = 1;
+            GetComponent<CanvasGroup>().alpha = 0;
+        }
+        GameObject.FindGameObjectWithTag("GUI").GetComponent<CanvasGroup>().alpha = (newPauseState == false ? 1 : 0);
+        pauseState = newPauseState;
+    }
+
 	// Update is called once per frame
 	void Update () {
 
@@ -68,7 +84,7 @@ public class PauseMenu : MonoBehaviour {
     }
 
     public void ResumeGame() {
-        gameObject.SetActive(false);
+        Toggle(false);
         Time.timeScale = 1;//resume game
     }
 
@@ -108,14 +124,14 @@ public class PauseMenu : MonoBehaviour {
     {
         float newVal = GameObject.Find("SoundSlider").GetComponentInChildren<Slider>().value;
         PersistentGameObject.GetComponent<PeristentObject>().sfxVal = newVal;
-        PersistentGameObject.GetComponent<PeristentObject>().DebugProps();
+        //PersistentGameObject.GetComponent<PeristentObject>().DebugProps();
     }
 
     public void AdjustMusicVolume()
     {
         float newVal = GameObject.Find("MusicSlider").GetComponentInChildren<Slider>().value;
         PersistentGameObject.GetComponent<PeristentObject>().musicVal = newVal;
-        PersistentGameObject.GetComponent<PeristentObject>().DebugProps();
+        //PersistentGameObject.GetComponent<PeristentObject>().DebugProps();
     }
 
     public void returnToMainMenu()
