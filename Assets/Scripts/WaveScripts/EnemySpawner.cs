@@ -11,7 +11,8 @@ public class EnemySpawner : MonoBehaviour
 
     List<Enemy> enemiesToSpawn;
     List<int> spawnCount;
-   
+    Dictionary<string, int> enemyRead = new Dictionary<string, int> { { "m", 0 }, { "t", 1 }, {"f", 2 }, {"c", 3 } };
+
     void Awake()
     {
         spawnPoints = GetComponentsInChildren<SpawnPoint>();
@@ -46,9 +47,9 @@ public class EnemySpawner : MonoBehaviour
         string line = reader.ReadLine();
         while (line != null)
         {
-            if (line == "E")
+            if (enemyRead.ContainsKey(line))
             {
-                enemiesToSpawn.Add(enemyTypes[0]);
+                enemiesToSpawn.Add(enemyTypes[enemyRead[line]]);
             }
             else
             {

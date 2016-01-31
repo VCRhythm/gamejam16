@@ -43,8 +43,6 @@ public static class TransformExtensions {
             foodScriptLookupFromTransform.Add(trans, foodScript);
         }
 
-        Debug.Log(trans + " " + iDamageable);
-
         if(iDamageable != null)
         {
             iDamageableLookupFromCollider.Add(collider, iDamageable);
