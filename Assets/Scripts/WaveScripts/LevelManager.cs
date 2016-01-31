@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour {
 
     public float lengthOfDay = 120;
     public float numberOfNights = 2;
     public int amountOfCheeseToSpawn = 100;
+    public int levelToLoadWhenFinished;
 
     int night = 1;
+
     EnemySpawner enemySpawner;
     ItemSpawner itemSpawner;
     DayNight dayNight;
@@ -35,6 +38,11 @@ public class LevelManager : MonoBehaviour {
 
     void SpawnFood()
     {
+        if(night > numberOfNights)
+        {
+            SceneManager.LoadScene(levelToLoadWhenFinished);
+        }
+
         itemSpawner.SpawnInRandomLocation(amountOfCheeseToSpawn);
     }
 
@@ -43,6 +51,7 @@ public class LevelManager : MonoBehaviour {
         dayNight.StartNight();
         audioManager.playNightMusic();
         Invoke("StartWave", 3f);
+        night++;
     }
 
     void StartWave()
