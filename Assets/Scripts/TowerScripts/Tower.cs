@@ -10,7 +10,7 @@ public abstract class Tower : MonoBehaviour, IDamageable {
 
     protected LayerMask enemyLayer = 1 << 8;
     protected GameObject target;
-    protected ParticleSystem particleSystem;
+    new protected ParticleSystem particleSystem;
 
     //upgrading
     public int maxLevel;

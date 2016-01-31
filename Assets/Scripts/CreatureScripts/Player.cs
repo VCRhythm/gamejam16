@@ -79,4 +79,10 @@ public class Player : Creature {
             color = colors[colorIndex];
         }
     }
+
+    protected override void Die()
+    {
+        enabled = false;
+    }
+
 }

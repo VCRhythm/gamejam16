@@ -8,15 +8,6 @@ public class Homebase : Tower
 
     float nextHealTime = 0;
 
-    void Start()
-    {
-        health = 700;
-        maxHealth = health;
-        target = null;
-        range = 10;
-        fireRate = 2.5f;
-    }
-
     void Update()
     {
         if (health < maxHealth && nextHealTime < Time.time)

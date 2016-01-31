@@ -4,22 +4,6 @@ public class Deth : Tower {
 
     private float nextFire;
 
-    // Use this for initialization
-    void Start()
-    {
-        //generic stats to be changed
-        health = 300;
-        damage = 20;
-        cost = 300;
-        range = 15;
-        fireRate = .5f;
-        upgradeDamage = 3;
-        upgradeHealth = 10;
-        maxLevel = 5;
-        target = null;
-        nextFire = 0;
-    }
-
     // Update is called once per frame
     void Update()
     {

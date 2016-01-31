@@ -4,23 +4,6 @@ public class BigCheeseRay : Tower {
 
     private float nextFire;
 
-
-    // Use this for initialization
-    void Start()
-    {
-        //generic stats to be changed
-        health = 300;
-        damage = 30;
-        cost = 200;
-        range = 8;
-        fireRate = 2f;
-        upgradeDamage = 3;
-        upgradeHealth = 10;
-        maxLevel = 5;
-        target = null;
-        nextFire = 0;
-    }
-
     // Update is called once per frame
     void Update()
     {
