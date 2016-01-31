@@ -6,6 +6,7 @@ public class PlayerInput : MonoBehaviour {
     public bool isAttacking { get; private set; }
     public bool isRunning { get; private set; }
     public bool isTogglingBuildMenu { get; private set; }
+    public bool isTogglingPauseMenu { get; private set; }
     public float colorCycle { get; private set; }
 
     void Update ()
@@ -16,5 +17,6 @@ public class PlayerInput : MonoBehaviour {
         isAttacking = Input.GetButtonDown("Attack");
         horizontalInput = Input.GetAxis("Horizontal");
         verticalInput = Input.GetAxis("Vertical");
-	}
+        isTogglingPauseMenu = Input.GetButtonDown("Pause Menu");
+    }
 }
