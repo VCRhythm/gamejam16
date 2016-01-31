@@ -5,16 +5,35 @@
 [RequireComponent(typeof(PlayerInput))]
 public class Player : Creature {
 
-    public int foodCount = 0;
+    public int cheese = 0;
     public float colorCycleCooldown = 1f;
 
     int maxFoodCount = 300;
     float lastColorCycle;
+    TowerConstruction towerConstruction;
+    PlayerInput input;
+    Transform model;
 
     protected override void Awake()
     {
         base.Awake();
+
+        input = GetComponent<PlayerInput>();
         color = colors[colorIndex];
+        model = transform.GetChild(0);
+    }
+
+    void Start()
+    {
+        towerConstruction = FindObjectOfType<TowerConstruction>();
+    }
+
+    void Update()
+    {
+        if(input.isTogglingBuildMenu)
+        {
+            towerConstruction.ToggleBuildMenu();
+        }
     }
 
     void OnCollisionEnter(Collision other)
@@ -28,8 +47,14 @@ public class Player : Creature {
 
     void IncreaseFood(int amount)
     {
-        foodCount += amount;
-        foodCount = Mathf.Clamp(foodCount, 0, maxFoodCount);
+        cheese += amount;
+        cheese = Mathf.Clamp(cheese, 0, maxFoodCount);
+    }
+
+    public void GetTower(Tower tower)
+    {
+        cheese -= tower.cost;
+        Instantiate(tower, transform.position + model.forward * 2f, Quaternion.identity);
     }
 
     public void CycleColor(bool cycleForwards)
