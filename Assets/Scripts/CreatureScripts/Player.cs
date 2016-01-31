@@ -36,17 +36,13 @@ public class Player : Creature {
         {
             towerConstruction.ToggleBuildMenu();
         }
-        if (input.isTogglingPauseMenu)
-        {
-            float curAlpha = GameObject.FindGameObjectWithTag("PauseMenu").GetComponent<CanvasGroup>().alpha;
-            GameObject.FindGameObjectWithTag("PauseMenu").GetComponent<PauseMenu>().Toggle((curAlpha == 1 ? false : true));
-        }
     }
 
     void OnCollisionEnter(Collision other)
     {
         if(other.transform.CompareTag("Food"))
         {
+            Debug.Log(other.transform);
             IncreaseFood(other.transform.GetFood().amount);
             Destroy(other.gameObject);
         }

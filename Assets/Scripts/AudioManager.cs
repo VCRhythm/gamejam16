@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 
@@ -25,14 +24,12 @@ public class AudioManager : MonoBehaviour {
         m_TransitionIn = m_QuarterNote;
         m_TransitionOut = m_QuarterNote * 32;*/
 
-
-        Debug.Log(SceneManager.GetActiveScene().buildIndex);
-
-        if (SceneManager.GetActiveScene().buildIndex==0)
+        if (SceneManager.GetActiveScene().buildIndex == 0)
         {
             masterMixer.FindSnapshot("TitleMenu").TransitionTo(0.1f);
         }
-        else {
+        else
+        {
             playDayMusic();
         }
     }

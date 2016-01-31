@@ -1,23 +1,22 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
+
 public class GuiManager : MonoBehaviour {
-    public GameObject Player;
-    public GameObject HomeBaseObj;
+    public Player player;
+    public Homebase homeBase;
     //TODO: wave manager
     //TODO: object with Day/Night
 
-    Homebase HomeScript;
-	// Use this for initialization
-	void Start () {
-        HomeScript = HomeBaseObj.GetComponent<Homebase>();
+    GameObject[] GUIItems;
 
+
+    void Start()
+    {
+        GUIItems = GameObject.FindGameObjectsWithTag("GUIItem");
     }
-	
+
 	// Update is called once per frame
 	void Update () {
-        GameObject[] GUIItems = GameObject.FindGameObjectsWithTag("GUIItem");
-
         foreach (GameObject GUIItem in GUIItems) {
             if (GUIItem.name=="BaseHP")
             {
@@ -47,23 +46,23 @@ public class GuiManager : MonoBehaviour {
     }
 
     void updatePlayerHP(GameObject GUIItem) {
-        int health = Player.GetComponent<Player>().health;
+        int health = player.health;
         int maxhealth = 300;//TO DO: max health property from player
-        GUIItem.transform.Find("PlayerHPText").GetComponent<Text>().text = health + " / " + maxhealth;
+        GUIItem.transform.FindChild("PlayerHPText").GetComponent<Text>().text = health + " / " + maxhealth;
         GUIItem.GetComponent<RectTransform>().sizeDelta = new Vector2(Mathf.Floor(((float)health / (float)maxhealth) * 460), GUIItem.GetComponent<RectTransform>().rect.height);
     }
 
     void updateBaseHP(GameObject GUIItem)
     {
-        int health = HomeBaseObj.GetComponent<Homebase>().health;
+        int health = homeBase.health;
         int maxhealth = 700;//TO DO: max health property from homebase
-        GUIItem.transform.Find("BaseHPText").GetComponent<Text>().text = health + " / " + maxhealth;
+        GUIItem.transform.FindChild("BaseHPText").GetComponent<Text>().text = health + " / " + maxhealth;
         GUIItem.GetComponent<RectTransform>().sizeDelta = new Vector2(Mathf.Floor(((float)health / (float)maxhealth) * 460), GUIItem.GetComponent<RectTransform>().rect.height);
     }
 
     void updateCheeseText(GameObject GUIItem)
     {
-        int foodCount = Player.GetComponent<Player>().cheese;
+        int foodCount = player.cheese;
         int maxcheese = 300;
         GUIItem.GetComponent<Text>().text = "Cheese: " + foodCount + " / " + maxcheese;
     }

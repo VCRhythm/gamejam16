@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
-using System.IO;
 
 public class LevelManager : MonoBehaviour {
 
@@ -23,7 +21,7 @@ public class LevelManager : MonoBehaviour {
     }
 
     void Start()
-    {
+    {        
         StartDay();
     }
 
