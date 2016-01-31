@@ -10,6 +10,8 @@ public class Homebase : Tower
 
     protected override void Awake()
     {
+        base.Awake();
+
         maxHealth = health;
     }
 

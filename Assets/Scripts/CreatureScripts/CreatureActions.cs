@@ -9,7 +9,7 @@ public class CreatureActions : MonoBehaviour {
     public int attackDamage = 1;
     public float attackCooldown = 1f;
 
-    public bool isActing { get; private set; }
+    [HideInInspector] public bool isActing = false;
 
     protected const int enemyLayer = 1 << 8;
     protected const int structureLayer = 1 << 9;
@@ -19,13 +19,9 @@ public class CreatureActions : MonoBehaviour {
     Transform model;
     protected float lastAttack;
     Animator animator;
-    
-    Creature creature;
 
     protected virtual void Awake ()
     {
-        isActing = false;
-        creature = GetComponent<Creature>();
         model = transform.GetChild(0);
         animator = GetComponentInChildren<Animator>();
     }

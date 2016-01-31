@@ -35,7 +35,7 @@ public class Enemy : Creature {
         base.Awake();
 
         model = transform.GetChild(0);
-        color = AssignColor();
+        //color = AssignColor();
         enemyActions = GetComponent<EnemyActions>();
         enemyMovement = GetComponent<EnemyMovement>();
         levelManager = FindObjectOfType<LevelManager>();
@@ -68,6 +68,7 @@ public class Enemy : Creature {
             }
         }
 
+        animator.SetBool("IsMoving", false);
         if (enemyActions.isActing) return;
 
         if (target != null)
@@ -87,7 +88,7 @@ public class Enemy : Creature {
                     enemyActions.Attack();
                 }
 
-                if (ShouldFollow(obstacleTransform))
+                /*if (ShouldFollow(obstacleTransform))
                 {
                     FocusOnTag(obstacleTransform.tag);
                 }
@@ -95,8 +96,9 @@ public class Enemy : Creature {
                 {
                     FocusOnTag("HomeBase");
                 }
+                */
             }
-
+            animator.SetBool("IsMoving", true);
             enemyMovement.Move(heading, towerSlowModifier);
         }
         else

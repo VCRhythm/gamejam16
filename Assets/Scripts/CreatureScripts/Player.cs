@@ -14,10 +14,10 @@ public class Player : Creature {
         }
     }
 
-    public int cheese = 0;
+    public int cheese { get; private set; }
+    public int maxCheese = 300;
     public float colorCycleCooldown = 1f;
-
-    int maxFoodCount = 300;
+    
     float lastColorCycle;
     TowerConstruction towerConstruction;
     PlayerInput input;
@@ -66,7 +66,7 @@ public class Player : Creature {
     void IncreaseFood(int amount)
     {
         cheese += amount;
-        cheese = Mathf.Clamp(cheese, 0, maxFoodCount);
+        cheese = Mathf.Clamp(cheese, 0, maxCheese);
     }
 
     void IncreaseHealth(int amount)

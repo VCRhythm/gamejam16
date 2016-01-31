@@ -5,6 +5,7 @@ public class PlayerMovement : CreatureMovement {
 
     public float runModifier = 2f;
     PlayerInput input;
+    AnimationState moveAnimation;
 
     protected override void Awake()
     {
@@ -19,8 +20,9 @@ public class PlayerMovement : CreatureMovement {
 
         if (movement != Vector3.zero)
         {
+            Move(Camera.main.transform.TransformDirection(movement), input.isRunning ? runModifier : 1);
             animator.SetBool("IsMoving", true);
-            Move(movement, input.isRunning ? runModifier : 1);
+            animator.SetFloat("RunMod", input.isRunning ? 2 : 1);
         }
         else
         {
@@ -28,9 +30,9 @@ public class PlayerMovement : CreatureMovement {
         }
     }
 
-    protected override bool CanMoveInDirection(Vector3 direction)
+    protected override bool CanMoveInDirection(Vector3 direction, float modifier)
     {
-        Transform obstacle = model.GetTransformInDirection(model.forward * checkForCollisionStartDistance, direction, checkForCollisionDistance, movementCheckLayer);
+        Transform obstacle = model.GetTransformInDirection(model.forward * checkForCollisionStartDistance, direction, checkForCollisionDistance * modifier, movementCheckLayer);
         return !obstacle;
     }
 

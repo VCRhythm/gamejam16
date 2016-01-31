@@ -7,7 +7,9 @@ public class LevelManager : MonoBehaviour {
     public float numberOfNights = 2;
     public int amountOfCheeseToSpawn = 100;
     public int levelToLoadWhenFinished;
+    public int thisLevel;
 
+    public float dayTimeLeft { get { return lengthOfDay - (Time.time - dayTimeStart); } }
     public int enemiesStarted { get; private set; }
     public int enemiesRemaining { get; private set; }
     public int night { get; private set; }
@@ -17,10 +19,11 @@ public class LevelManager : MonoBehaviour {
     ItemSpawner itemSpawner;
     DayNight dayNight;
     AudioManager audioManager;
+    float dayTimeStart;
 
     void Awake()
     {
-        night = 1;
+        night = 0;
         dayNight = FindObjectOfType<DayNight>();
         enemySpawner = GetComponent<EnemySpawner>();
         itemSpawner = GetComponent<ItemSpawner>();
@@ -45,10 +48,12 @@ public class LevelManager : MonoBehaviour {
 
     public void StartDay()
     {
+        night++;
         isDay = true;
         dayNight.StartDay();
         audioManager.playDayMusic();
         Invoke("SpawnFood", 3f);
+        dayTimeStart = Time.time;
         Invoke("StartNight", lengthOfDay);
     }
 
@@ -68,13 +73,11 @@ public class LevelManager : MonoBehaviour {
         dayNight.StartNight();
         audioManager.playNightMusic();
         Invoke("StartWave", 3f);
-        night++;
     }
 
     void StartWave()
     {
-        enemiesStarted = enemySpawner.SpawnEnemies(night);
+        enemiesStarted = enemySpawner.SpawnEnemies(thisLevel, night);
         enemiesRemaining = enemiesStarted;
     }
-
 }

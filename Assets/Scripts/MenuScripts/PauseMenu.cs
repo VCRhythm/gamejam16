@@ -10,10 +10,14 @@ public class PauseMenu : MonoBehaviour {
 
     public GameObject PersistenceGamePrefab;
     GameObject PersistentGameObject;
+    CanvasGroup canvasGroup;
+    
     //public AudioSource gameMusic; // TODO: add music
     // Use this for initialization
     void Start()
     {
+        canvasGroup = GetComponent<CanvasGroup>();
+
         if (GameObject.FindGameObjectsWithTag("PersistentObject").Length < 1)
         {
             PersistentGameObject = Instantiate(PersistenceGamePrefab, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
@@ -51,11 +55,15 @@ public class PauseMenu : MonoBehaviour {
         if (newPauseState)
         {
             Time.timeScale = 0;//pause game
-            GetComponent<CanvasGroup>().alpha = 1;
+            canvasGroup.alpha = 1;
+            canvasGroup.interactable = true;
+            canvasGroup.blocksRaycasts = true;
         }
         else {
             Time.timeScale = 1;
-            GetComponent<CanvasGroup>().alpha = 0;
+            canvasGroup.alpha = 0;
+            canvasGroup.interactable = false;
+            canvasGroup.blocksRaycasts = false;
         }
         GameObject.FindGameObjectWithTag("GUI").GetComponent<CanvasGroup>().alpha = (newPauseState == false ? 1 : 0);
     }
@@ -63,7 +71,7 @@ public class PauseMenu : MonoBehaviour {
 	void Update () {
         if (Input.GetButtonDown("Pause Menu"))
         {
-            float curAlpha = GetComponent<CanvasGroup>().alpha;
+            float curAlpha = canvasGroup.alpha;
             Toggle((curAlpha == 1 ? false : true));
         }
 
@@ -86,7 +94,6 @@ public class PauseMenu : MonoBehaviour {
 
     public void ResumeGame() {
         Toggle(false);
-        Time.timeScale = 1;//resume game
     }
 
     public void SwitchToQuitConfirmation()
@@ -137,7 +144,7 @@ public class PauseMenu : MonoBehaviour {
 
     public void returnToMainMenu()
     {
-        DontDestroyOnLoad(PersistentGameObject);
+        Toggle(false);
         SceneManager.LoadScene(0);
     }
 

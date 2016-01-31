@@ -5,13 +5,13 @@ public class GuiManager : MonoBehaviour {
     private Player player;
     private Homebase homeBase;
     private LevelManager levelManager;
-    //TODO: wave manager
-    //TODO: object with Day/Night
+    private CanvasGroup gameOverPanel;
 
     GameObject[] GUIItems;
 
     void Start()
     {
+        gameOverPanel = transform.FindChild("GameOverPanel").GetComponent<CanvasGroup>();
         player = FindObjectOfType<Player>();
         homeBase = FindObjectOfType<Homebase>();
         levelManager = FindObjectOfType<LevelManager>();
@@ -19,7 +19,6 @@ public class GuiManager : MonoBehaviour {
         GUIItems = GameObject.FindGameObjectsWithTag("GUIItem");
     }
 
-	// Update is called once per frame
 	void Update () {
         foreach (GameObject GUIItem in GUIItems) {
             if (GUIItem.name=="BaseHP")
@@ -49,11 +48,19 @@ public class GuiManager : MonoBehaviour {
         }
     }
 
-    void updatePlayerHP(GameObject GUIItem) {
+    void updatePlayerHP(GameObject GUIItem)
+    {
         int health = player.health;
         int maxhealth = player.maxHealth;
         GUIItem.transform.FindChild("PlayerHPText").GetComponent<Text>().text = health + " / " + maxhealth;
         GUIItem.GetComponent<RectTransform>().sizeDelta = new Vector2(Mathf.Floor(((float)health / (float)maxhealth) * 460), GUIItem.GetComponent<RectTransform>().rect.height);
+
+        if(health <= 0 )
+        {
+            gameOverPanel.alpha = 1;
+            gameOverPanel.blocksRaycasts = true;
+            gameOverPanel.interactable = true;
+        }
     }
 
     void updateBaseHP(GameObject GUIItem)
@@ -62,14 +69,18 @@ public class GuiManager : MonoBehaviour {
         int maxhealth = homeBase.maxHealth;
         GUIItem.transform.FindChild("BaseHPText").GetComponent<Text>().text = health + " / " + maxhealth;
         GUIItem.GetComponent<RectTransform>().sizeDelta = new Vector2(Mathf.Floor(((float)health / (float)maxhealth) * 460), GUIItem.GetComponent<RectTransform>().rect.height);
+
+        if (health <= 0)
+        {
+            gameOverPanel.alpha = 1;
+            gameOverPanel.blocksRaycasts = true;
+            gameOverPanel.interactable = true;
+        }
     }
 
     void updateCheeseText(GameObject GUIItem)
     {
-        int foodCount = player.cheese;
-        int maxcheese = 300;
-        Debug.Log(GUIItem);
-        GUIItem.GetComponent<Text>().text = "Cheese: " + foodCount + " / " + maxcheese;
+        GUIItem.GetComponent<Text>().text = "Cheese: " + player.cheese + " / " + player.maxCheese;
     }
 
     void updateWaveNum(GameObject GUIItem)
@@ -79,14 +90,20 @@ public class GuiManager : MonoBehaviour {
 
     void updateDayStateText(GameObject GUIItem)
     {
-        //TO DO: get value from somewhere
         GUIItem.GetComponent<Text>().text = levelManager.isDay ? "Day" : " Night";
     }
 
     void updateEnemiesLeftText(GameObject GUIItem)
     {
-        //TO DO: get from wave manager
-        GUIItem.GetComponent<Text>().text = levelManager.enemiesRemaining + "/" + levelManager.enemiesStarted;
+        if (levelManager.isDay)
+        {
+            int hour = Mathf.FloorToInt(levelManager.dayTimeLeft / 60);
+            GUIItem.GetComponent<Text>().text = hour > 0 ? (Mathf.FloorToInt(levelManager.dayTimeLeft / 60) + ":") : "" + Mathf.FloorToInt(levelManager.dayTimeLeft % 60);
+        }
+        else
+        {
+            GUIItem.GetComponent<Text>().text = levelManager.enemiesRemaining + "/" + levelManager.enemiesStarted;
+        }
     }
 
 }

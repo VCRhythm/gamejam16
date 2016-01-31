@@ -21,9 +21,9 @@ public class EnemySpawner : MonoBehaviour
         spawnCount = new List<int>();
     }
 
-    public int SpawnEnemies(int night)
+    public int SpawnEnemies(int level, int night)
     {
-        ReadEnemyFile(night);
+        ReadEnemyFile(level, night);
         StartCoroutine(StartSpawning());
         return spawnCount.Sum();
     }
@@ -40,10 +40,10 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    void ReadEnemyFile(int night)
+    void ReadEnemyFile(int level, int night)
     {
         //read wave from file
-        FileInfo file = new FileInfo(Application.dataPath + "\\Night" + night + ".txt");
+        FileInfo file = new FileInfo(Application.dataPath + "\\Level" + level +"Night" + night + ".txt");
         StreamReader reader = file.OpenText();
 
         string line = reader.ReadLine();

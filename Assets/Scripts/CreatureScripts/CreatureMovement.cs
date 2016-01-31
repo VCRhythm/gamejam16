@@ -25,7 +25,7 @@ public class CreatureMovement : MonoBehaviour {
     {
         SmoothLook(direction);
 
-        if (CanMoveInDirection(direction))
+        if (CanMoveInDirection(direction, baseMoveModifier * moveModifier))
         {
             rbody.MovePosition(rbody.position + direction * baseMoveModifier * moveModifier);
             return true;
@@ -33,9 +33,9 @@ public class CreatureMovement : MonoBehaviour {
         return false;
     }
 
-    protected virtual bool CanMoveInDirection(Vector3 direction)
+    protected virtual bool CanMoveInDirection(Vector3 direction, float moveModifier)
     {
-        Transform obstacle = model.GetTransformInDirectionWithThreeRaycasts(model.forward * checkForCollisionStartDistance, direction, checkForCollisionDistance, movementCheckLayer);
+        Transform obstacle = model.GetTransformInDirectionWithThreeRaycasts(model.forward * checkForCollisionStartDistance, direction, checkForCollisionDistance * moveModifier, movementCheckLayer);
         return !obstacle;
     }
 

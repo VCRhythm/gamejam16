@@ -17,9 +17,11 @@ public class Creature : MonoBehaviour, IDamageable {
 
     new private ParticleSystem particleSystem;
     protected Animator animator;
+    CreatureActions creatureActions;
 
     protected virtual void Awake()
     {
+        creatureActions = GetComponent<CreatureActions>();
         animator = GetComponentInChildren<Animator>();
         particleSystem = GetComponentInChildren<ParticleSystem>();
         meshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
@@ -50,6 +52,7 @@ public class Creature : MonoBehaviour, IDamageable {
     {
         if (isShowingDamage) return;
 
+        creatureActions.isActing = true;
         isShowingDamage = true;
         
         if (particleSystem)
@@ -57,11 +60,15 @@ public class Creature : MonoBehaviour, IDamageable {
             particleSystem.Play();
         }
 
+        meshRenderer.material.color = damagedColor;
         animator.SetTrigger("Damaged");
+        Invoke("HideDamage", .5f);
     }
 
     void HideDamage()
     {
+        meshRenderer.material.color = Color.white;
+        creatureActions.isActing = false;
         isShowingDamage = false;
     }
 
