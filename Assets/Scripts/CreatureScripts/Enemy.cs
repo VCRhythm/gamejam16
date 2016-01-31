@@ -66,6 +66,8 @@ public class Enemy : Creature {
             }
         }
 
+        if (enemyActions.isActing) return;
+
         if (target != null)
         {
             Vector3 heading = (target.position - transform.position).normalized;

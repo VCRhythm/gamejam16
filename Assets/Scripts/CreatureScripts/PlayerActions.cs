@@ -22,6 +22,8 @@ public class PlayerActions : CreatureActions {
 
     void FixedUpdate()
     {
+        if (isActing) return;
+
         if(input.isAttacking)
         {
             float vol = Random.Range(volLowRange, volHighRange);

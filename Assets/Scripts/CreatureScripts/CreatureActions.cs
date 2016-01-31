@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class CreatureActions : MonoBehaviour {
 
@@ -8,6 +9,8 @@ public class CreatureActions : MonoBehaviour {
     public int attackDamage = 1;
     public float attackCooldown = 1f;
 
+    public bool isActing { get; private set; }
+
     protected const int enemyLayer = 1 << 8;
     protected const int structureLayer = 1 << 9;
     protected const int playerLayer = 1 << 11;
@@ -16,9 +19,13 @@ public class CreatureActions : MonoBehaviour {
     Transform model;
     protected float lastAttack;
     Animator animator;
+    
+    Creature creature;
 
     protected virtual void Awake ()
     {
+        isActing = false;
+        creature = GetComponent<Creature>();
         model = transform.GetChild(0);
         animator = GetComponentInChildren<Animator>();
     }
@@ -27,14 +34,21 @@ public class CreatureActions : MonoBehaviour {
     {
         if (!CanAttack()) return;
 
+        isActing = true;
         animator.SetTrigger("Attack");
 
-        lastAttack = Time.time;
+        StartCoroutine(AttackCoroutine());        
+    }
+
+    IEnumerator AttackCoroutine()
+    {
+        yield return new WaitForSeconds(.5f);
         Collider[] attackedColliders = GetCreatureCollidersInAttackRadius();
-        if(attackedColliders.Length > 0)
+        if (attackedColliders.Length > 0)
         {
             Damage(attackedColliders);
         }
+        isActing = false;
     }
 
     void Damage(Collider[] attackedColliders)
