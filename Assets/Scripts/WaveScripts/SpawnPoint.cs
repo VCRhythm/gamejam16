@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 
-public class SpawnPoint : MonoBehaviour {    
-    public void Spawn(Enemy enemy)
+public class SpawnPoint : MonoBehaviour
+{
+    public Enemy[] enemyTypes;
+
+    public void Spawn(Enemy toSpawn)
     {
-        Instantiate(enemy, transform.position, Quaternion.identity);
+        Instantiate(toSpawn, transform.position, Quaternion.identity);
     }
 }

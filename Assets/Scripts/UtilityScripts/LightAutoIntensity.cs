@@ -32,7 +32,9 @@ public class LightAutoIntensity : MonoBehaviour
     Material skyMat;
     DayNight DayNightScript;
 
-    void Awake()
+
+    public EnemySpawner enemySpawn;
+    void Start()
     {
         DayNightScript = GetComponent<DayNight>();
         DayNightScript.stars.SetActive(false);
@@ -45,17 +47,17 @@ public class LightAutoIntensity : MonoBehaviour
 
     void Update()
     {
-        if (Debug.isDebugBuild)
+#if UNITY_EDITOR
+        //debug code
+        if (Input.GetKeyDown(KeyCode.O))
         {
-            if (Input.GetKeyDown(KeyCode.O))
-            {
-                SetTransition(0);
-            }
-            if (Input.GetKeyDown(KeyCode.P))
-            {
-                SetTransition(1);
-            }
+            SetTransition(0);
         }
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            SetTransition(1);
+        }
+#endif
 
         TransitionDayState();
     }

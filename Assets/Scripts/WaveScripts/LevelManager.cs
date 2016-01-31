@@ -18,11 +18,6 @@ public class LevelManager : MonoBehaviour {
         foodSpawner = GetComponent<ItemSpawner>();
     }
 
-    void Start()
-    {
-        StartDay();
-    }
-
     void StartDay()
     {
         dayNight.StartDay();
@@ -52,7 +47,7 @@ public class LevelManager : MonoBehaviour {
 
         if (wave != null)
         {
-            enemySpawner.SpawnEnemies(wave.enemyTypes, wave.enemyCount);
+            //enemySpawner.SpawnEnemies(wave.enemyTypes, wave.enemyCount);
         }
         else
         {
