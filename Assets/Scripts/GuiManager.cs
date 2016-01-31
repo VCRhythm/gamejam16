@@ -61,8 +61,9 @@ public class GuiManager : MonoBehaviour {
         GUIItem.GetComponent<RectTransform>().sizeDelta = new Vector2(Mathf.Floor(((float)health / (float)maxhealth) * 460), GUIItem.GetComponent<RectTransform>().rect.height);
     }
 
-    void updateCheeseText(GameObject GUIItem) {
-        int foodCount = Player.GetComponent<Player>().foodCount;
+    void updateCheeseText(GameObject GUIItem)
+    {
+        int foodCount = Player.GetComponent<Player>().cheese;
         int maxcheese = 300;
         GUIItem.GetComponent<Text>().text = "Cheese: " + foodCount + " / " + maxcheese;
     }

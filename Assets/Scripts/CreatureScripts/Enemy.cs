@@ -7,15 +7,24 @@ public class Enemy : Creature {
 
     public string primaryTargetTag = "HomeBase";
 
-
     public float lookAheadStartDistance = 1f;
     public float lookAheadDistance = 5f;
+
+    //Tower Effects
+    public float towerSlowModifier = 1f;
+    public float slowTimer;
+
+    public int foodSpawnNumOnDeath;
+    public int healthSpawnNumOnDeath;
+
     LayerMask lookLayer = 1 << 8 | 1 << 9 | 1 << 11;
 
     Transform model;
     EnemyMovement enemyMovement;
     EnemyActions enemyActions;
     Transform target;
+
+    ItemSpawner itemSpawner;
 
     List<string> avoidTags = new List<string> { "Obstacle", "Enemy" };
     List<string> attackTags = new List<string> { "Player", "HomeBase", "Tower" };
@@ -30,6 +39,11 @@ public class Enemy : Creature {
         enemyMovement = GetComponent<EnemyMovement>();
     }
 
+    void Start()
+    {
+        itemSpawner = FindObjectOfType<ItemSpawner>();
+    }
+
     public override void TakeDamage(int damage)
     {
         base.TakeDamage(damage);
@@ -42,13 +56,14 @@ public class Enemy : Creature {
 
     void FixedUpdate()
     {
-        if (enemyMovement.towerSlowModifier != 1f)
+        if (towerSlowModifier != 1f)
         {
-            if (enemyMovement.slowTimer <= Time.time)
+            if (slowTimer <= Time.time)
             {
-                enemyMovement.towerSlowModifier = 1f;
+                towerSlowModifier = 1f;
             }
         }
+
         if (target != null)
         {
             Vector3 heading = (target.position - transform.position).normalized;
@@ -71,9 +86,13 @@ public class Enemy : Creature {
                 {
                     FocusOnTag(obstacleTransform.tag);
                 }
+                else if(obstacleTransform.CompareTag("Player"))
+                {
+                    FocusOnTag("HomeBase");
+                }
             }
 
-            enemyMovement.Move(heading, 1);
+            enemyMovement.Move(heading, towerSlowModifier);
         }
         else
         {
@@ -98,7 +117,7 @@ public class Enemy : Creature {
 
     Transform LookAheadForObjects(Vector3 heading)
     {
-        return model.GetTransformInDirection(model.forward * lookAheadStartDistance, heading, lookAheadDistance, lookLayer);
+        return model.GetTransformInDirectionWithThreeRaycasts(model.forward * lookAheadStartDistance, heading, lookAheadDistance, lookLayer);
     }
 
     void FocusOnTag(string tag)
@@ -111,6 +130,20 @@ public class Enemy : Creature {
     {
         GameObject target = GameObject.FindWithTag(primaryTargetTag);
         return target ? target.transform : null;
+    }
+
+    protected override void Die()
+    {
+        for(int i=0; i < foodSpawnNumOnDeath; i++)
+        {
+            itemSpawner.Spawn(ItemSpawner.ItemType.Food, transform.position);
+        }
+        for(int i=0; i < healthSpawnNumOnDeath; i++)
+        {
+            itemSpawner.Spawn(ItemSpawner.ItemType.Health, transform.position);
+        }
+
+        base.Die();
     }
 
 }

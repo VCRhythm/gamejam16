@@ -5,20 +5,18 @@ using System.IO;
 
 public class EnemySpawner : MonoBehaviour
 {
-
     // public int spawnCount = 1;
     public float timeBetweenSpawns = 1f;
     public Enemy[] enemyTypes;
     SpawnPoint[] spawnPoints;
+
     List<Enemy> enemiesToSpawn;
     List<int> spawnCount;
 
     int night = 0;
 
     string line = " ";
-    StreamReader reader;
-    FileInfo file;
-
+   
     void Awake()
     {
         spawnPoints = GetComponentsInChildren<SpawnPoint>();
@@ -26,11 +24,17 @@ public class EnemySpawner : MonoBehaviour
         spawnCount = new List<int>();
     }
 
+    public void SpawnEnemies()
+    {
+        StartCoroutine(StartSpawning());
+    }
+
     void OnEnable()
     {
         //read wave from file
-        file = new FileInfo(Application.dataPath + "\\Night" + night + ".txt");
-        reader = file.OpenText();
+        FileInfo file = new FileInfo(Application.dataPath + "\\Night" + night + ".txt");
+        StreamReader reader = file.OpenText();
+
         line = reader.ReadLine();
         while (line != null)
         {
@@ -51,11 +55,6 @@ public class EnemySpawner : MonoBehaviour
     void OnDisable()
     {
         night++;
-    }
-
-    public void SpawnEnemies()
-    {
-        StartCoroutine(StartSpawning());
     }
 
     IEnumerator StartSpawning()

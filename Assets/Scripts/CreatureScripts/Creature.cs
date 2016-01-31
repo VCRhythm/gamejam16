@@ -2,7 +2,8 @@
 
 public class Creature : MonoBehaviour, IDamageable {
 
-    public int health = 3;
+    public int maxHealth;
+    public int health { get; private set; }
     public Color damagedColor;
 
     public Color color { get { return colors[colorIndex]; } set { meshRenderer.material.color = value; } }
@@ -19,6 +20,7 @@ public class Creature : MonoBehaviour, IDamageable {
 
     void Start()
     {
+        health = maxHealth;
         transform.Register();
     }
 
@@ -52,7 +54,7 @@ public class Creature : MonoBehaviour, IDamageable {
         isShowingDamage = false;
     }
 
-    void Die()
+    protected virtual void Die()
     {
         Destroy(gameObject);
     }

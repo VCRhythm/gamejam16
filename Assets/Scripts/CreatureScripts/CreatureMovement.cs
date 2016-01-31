@@ -3,8 +3,6 @@
 public class CreatureMovement : MonoBehaviour {
 
     public float baseMoveModifier = .5f;
-    public float towerSlowModifier = 1f;
-    public float slowTimer;
     public float turnModifier = 10f;
     public float checkForCollisionStartDistance = 1f;
     public float checkForCollisionDistance = 1f;
@@ -12,10 +10,10 @@ public class CreatureMovement : MonoBehaviour {
     const int enemyLayer = 1 << 8;
     const int structureLayer = 1 << 9;
     const int playerLayer = 1 << 11;
-    LayerMask movementCheckLayer = enemyLayer | structureLayer | playerLayer;
+    protected LayerMask movementCheckLayer = enemyLayer | structureLayer | playerLayer;
 
     Rigidbody rbody;
-    Transform model;
+    protected Transform model;
 
     protected virtual void Awake()
     {
@@ -28,15 +26,15 @@ public class CreatureMovement : MonoBehaviour {
 
         if (CanMoveInDirection(direction))
         {
-            rbody.MovePosition(rbody.position + direction * baseMoveModifier * moveModifier * towerSlowModifier);
+            rbody.MovePosition(rbody.position + direction * baseMoveModifier * moveModifier);
             return true;
         }
         return false;
     }
 
-    bool CanMoveInDirection(Vector3 direction)
+    protected virtual bool CanMoveInDirection(Vector3 direction)
     {
-        Transform obstacle = model.GetTransformInDirection(model.forward * checkForCollisionStartDistance, direction, checkForCollisionDistance, movementCheckLayer);
+        Transform obstacle = model.GetTransformInDirectionWithThreeRaycasts(model.forward * checkForCollisionStartDistance, direction, checkForCollisionDistance, movementCheckLayer);
         return !obstacle;
     }
 

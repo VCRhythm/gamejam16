@@ -23,6 +23,12 @@ public class PlayerMovement : CreatureMovement {
         }
 	}
 
+    protected override bool CanMoveInDirection(Vector3 direction)
+    {
+        Transform obstacle = model.GetTransformInDirection(model.forward * checkForCollisionStartDistance, direction, checkForCollisionDistance, movementCheckLayer);
+        return !obstacle;
+    }
+
     Vector3 GetMovementInput()
     {
         return new Vector3(input.horizontalInput, 0, input.verticalInput);

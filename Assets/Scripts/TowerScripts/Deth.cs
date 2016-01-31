@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Deth : Tower {
 
@@ -62,7 +61,7 @@ public class Deth : Tower {
     {
         if (target)
         {
-            target.GetComponent<Creature>().TakeDamage((int)damage);
+            target.transform.GetCreature().TakeDamage((int)damage);
         }
     }
 }

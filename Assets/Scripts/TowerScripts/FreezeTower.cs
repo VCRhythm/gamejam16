@@ -40,7 +40,7 @@ public class FreezeTower : Tower {
                 //fire at target
                 if (nextFire < Time.time)
                 {
-                    if (target.GetComponent<EnemyMovement>().towerSlowModifier == 1f)
+                    if (target.transform.GetEnemy().towerSlowModifier == 1f)
                     {
                         Fire();
                         nextFire = Time.time + fireRate;
@@ -65,9 +65,9 @@ public class FreezeTower : Tower {
     {
         if (target)
         {
-            EnemyMovement mover = target.GetComponent<EnemyMovement>();
-            mover.towerSlowModifier = .25f;
-            mover.slowTimer = Time.time + slowRate;
+            Enemy enemy = target.transform.GetEnemy();
+            enemy.towerSlowModifier = .25f;
+            enemy.slowTimer = Time.time + slowRate;
         }
     }
 }

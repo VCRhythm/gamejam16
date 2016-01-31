@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class BigCheeseRay : Tower {
 
@@ -62,7 +61,7 @@ public class BigCheeseRay : Tower {
     {
         if (target)
         {
-            target.GetComponent<Creature>().TakeDamage((int)damage);
+            target.transform.GetCreature().TakeDamage((int)damage);
         }
     }
 }
