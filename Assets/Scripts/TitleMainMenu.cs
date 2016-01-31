@@ -6,19 +6,24 @@ using UnityEngine.SceneManagement;
 public class TitleMainMenu : MonoBehaviour {
     public Canvas MainMenu;
     public Canvas OptionMenu;
+    public GameObject PersistenceGamePrefab;
     public GameObject PersistenceGameObject;
 
     // Use this for initialization
     void Start () {
+        if (GameObject.FindGameObjectsWithTag("PersistentObject").Length < 1) {
+            PersistenceGameObject = Instantiate(PersistenceGamePrefab, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
+        }
+        //Debug.Log(PersistenceGameObject);
+        PersistenceGameObject.GetComponent<PeristentObject>().DebugProps();
+        SetValuesFromGameSaveSettings();
         MainMenu = MainMenu.GetComponent<Canvas>();
         OptionMenu = OptionMenu.GetComponent<Canvas>();
-        SetValuesFromGameSaveSettings();
         OptionMenu.gameObject.SetActive(false);
     }
 	
 	// Update is called once per frame
 	void Update () {
-	
 	}
 
     public void StartGame() {
@@ -67,6 +72,16 @@ public class TitleMainMenu : MonoBehaviour {
                 GraphicsSliderText.text = QualitySettings.names[QualitySettings.GetQualityLevel()];//set from quality settings
             }
         }
+
+        SetMusicLevel(PersistenceGameObject.GetComponent<PeristentObject>().musicVal);
+        GetComponent<AudioManager>().SetMusicLevel(PersistenceGameObject.GetComponent<PeristentObject>().musicVal);
+        GameObject MusicSlider = GameObject.Find("MusicSlider");
+        MusicSlider.GetComponentInChildren<Slider>().value = PersistenceGameObject.GetComponent<PeristentObject>().musicVal;
+
+        SetSFXLevel(PersistenceGameObject.GetComponent<PeristentObject>().sfxVal);
+        GetComponent<AudioManager>().SetSFXLevel(PersistenceGameObject.GetComponent<PeristentObject>().sfxVal);
+        GameObject SoundSlider = GameObject.Find("SoundSlider");
+        SoundSlider.GetComponentInChildren<Slider>().value = PersistenceGameObject.GetComponent<PeristentObject>().sfxVal;
     }
     
     public void QuitGame() {
@@ -77,10 +92,12 @@ public class TitleMainMenu : MonoBehaviour {
     public void SetSFXLevel(float sfxLvl)
     {
         PersistenceGameObject.GetComponent<PeristentObject>().sfxVal = sfxLvl;
+        PersistenceGameObject.GetComponent<PeristentObject>().DebugProps();
     }
 
     public void SetMusicLevel(float musicLvl)
     {
         PersistenceGameObject.GetComponent<PeristentObject>().musicVal = musicLvl;
+        PersistenceGameObject.GetComponent<PeristentObject>().DebugProps();
     }
 }

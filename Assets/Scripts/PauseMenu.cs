@@ -1,24 +1,35 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 public class PauseMenu : MonoBehaviour {
 
     public Canvas PauseMenuView;
     public Canvas OptionMenuView;
     public Canvas QuitConfirmView;
+    public Canvas ReturnMainMenuView;
+
+    public GameObject PersistenceGamePrefab;
+    GameObject PersistentGameObject;
     //public AudioSource gameMusic; // TODO: add music
 
     // Use this for initialization
     void Start()
     {
+        if (GameObject.FindGameObjectsWithTag("PersistentObject").Length < 1)
+        {
+            PersistentGameObject = Instantiate(PersistenceGamePrefab, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
+        }
         Time.timeScale = 0;//pause game
         PauseMenuView = PauseMenuView.GetComponent<Canvas>();
         OptionMenuView = OptionMenuView.GetComponent<Canvas>();
         QuitConfirmView = QuitConfirmView.GetComponent<Canvas>();
+        ReturnMainMenuView = ReturnMainMenuView.GetComponent<Canvas>();
         SetValuesFromGameSaveSettings();//Set values from game/save settings
         PauseMenuView.gameObject.SetActive(true);
         OptionMenuView.gameObject.SetActive(false);
         QuitConfirmView.gameObject.SetActive(false);
+        ReturnMainMenuView.gameObject.SetActive(false);
     }
 
     public void AdjustGraphicsSettings()
@@ -38,6 +49,7 @@ public class PauseMenu : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+
     }
 
     void SetValuesFromGameSaveSettings()
@@ -77,6 +89,11 @@ public class PauseMenu : MonoBehaviour {
         HideAllPauseMenuScreens();
         OptionMenuView.gameObject.SetActive(true);
     }
+    public void SwitchToReturnMainMenu()
+    {
+        HideAllPauseMenuScreens();
+        ReturnMainMenuView.gameObject.SetActive(true);
+    }
 
     void HideAllPauseMenuScreens()
     {
@@ -90,17 +107,23 @@ public class PauseMenu : MonoBehaviour {
     public void AdjustSoundVolume()
     {
         float newVal = GameObject.Find("SoundSlider").GetComponentInChildren<Slider>().value;
-        AudioListener.volume = newVal;
-        //Debug.Log(newVal);
+        PersistentGameObject.GetComponent<PeristentObject>().sfxVal = newVal;
+        PersistentGameObject.GetComponent<PeristentObject>().DebugProps();
     }
 
     public void AdjustMusicVolume()
     {
         float newVal = GameObject.Find("MusicSlider").GetComponentInChildren<Slider>().value;
-        //gameMusic.volume = newVal;
-        //Debug.Log(newVal);
+        PersistentGameObject.GetComponent<PeristentObject>().musicVal = newVal;
+        PersistentGameObject.GetComponent<PeristentObject>().DebugProps();
     }
-    
+
+    public void returnToMainMenu()
+    {
+        DontDestroyOnLoad(PersistentGameObject);
+        SceneManager.LoadScene(0);
+    }
+
     public void QuitGame() {
         Application.Quit();
     }

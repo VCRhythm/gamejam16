@@ -43,8 +43,10 @@ public class PeristentObject : MonoBehaviour
     }
 
     // Add the rest of the code here...
-    public void DoSomeThing()
+    public void DebugProps()
     {
-        Debug.Log("Doing something now", this);
+        Debug.Log("p - graphicsVal: " + graphicsVal);
+        Debug.Log("p - musicVal: " + musicVal);
+        Debug.Log("p - sfxVal: " + sfxVal);
     }
 }
